@@ -1,0 +1,29 @@
+{
+  "name": "filerecovery",
+  "version": "1.0.0",
+  "description": "A PNG, JPG, DOC, and XLS file recovery for windows.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ollen/FileRecovery.git"
+  },
+  "keywords": [
+    "file",
+    "recovery",
+    "doc",
+    "jpg",
+    "png",
+    "xls",
+    "forensics",
+    "carving"
+  ],
+  "author": "Allendale Nato <natoallendale@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ollen/FileRecovery/issues"
+  },
+  "homepage": "https://github.com/Ollen/FileRecovery#readme"
+}
