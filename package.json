@@ -25,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/Ollen/FileRecovery/issues"
   },
-  "homepage": "https://github.com/Ollen/FileRecovery#readme"
+  "homepage": "https://github.com/Ollen/FileRecovery#readme",
+  "dependencies": {
+    "materialize-css": "^0.97.7"
+  },
+  "devDependencies": {}
 }
