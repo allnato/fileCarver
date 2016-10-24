@@ -1,14 +1,32 @@
 #file_headers2.py
 
-# rename all of the files to [num] in controller.py
+# ask if deleting a file of the same hash is allowed
 # fix scanning in the same block (after a successful search and find) for another file_type
 # make this a stable version!! and create file_headers3
 
-import binascii, time, re, os, math, hashlib
+import binascii, re, os, math, hashlib
 
-IMG_CTR = 0
+FILE_CTR = 0
 
-# def cleanFiles()
+def cleanFiles(output_path, **item_opt):
+	global FILE_CTR
+	FILE_CTR = 0
+	
+	try:
+		lst_files = os.listdir(output_path)
+	except (OSError, IOError) as e:
+		print("Error: " + output_path + " cannot be read.")
+		exit(-1)
+	
+	for inst in lst_files:
+		if len(inst) >= 128:
+			FILE_CTR = FILE_CTR + 1
+			file_type = inst.split(".")[1]
+			inst = output_path + inst
+			os.rename(inst, os.path.join(output_path, '[' + str(FILE_CTR) + '].' + file_type))
+			
+	print("[+] Recovered ", FILE_CTR, " files.")
+	print("Program completed successfully.")
 
 def compileRegs(**item_opt):
 	lst_types = []
@@ -28,7 +46,7 @@ def compileRegs(**item_opt):
 			lst_srt.append(re.compile(lst_cont[1].replace(" ", "")))
 			lst_end.append(re.compile(lst_cont[2].replace(" ", "")))
 			lst_cat.append(lst_cont[3].upper())
-			lst_buf.append(int(lst_cont[4]) * 1048576)                        # multiply by 1 MB
+			lst_buf.append(int(lst_cont[4]) * 2097152)                        # multiply by 2 MB
 
 	except (OSError, IOError) as e:
 		print("Error: " + file_name + " cannot be read.")
@@ -37,7 +55,7 @@ def compileRegs(**item_opt):
 	return(lst_srt, lst_end, lst_types, lst_buf)
 
 def readImage(file_name, lst_srt, lst_end, lst_types, lst_buf, **item_opt):
-	global IMG_CTR
+	global FILE_CTR
 	block_size = 131072 #16 # 4096 # 16384 #0.25 GB #131072 # 4096 is really optimal and is for complete scan # 131072 for fast scan
 	block_num = 0
 	
@@ -108,7 +126,7 @@ def readImage(file_name, lst_srt, lst_end, lst_types, lst_buf, **item_opt):
 				
 				#continue                                                 # check if this is even needed
 				
-			IMG_CTR = IMG_CTR + len(lst_dump)
+			FILE_CTR = FILE_CTR + len(lst_dump)
 			
 			for item in lst_dump:
 				if len(item.encode('utf-8')) % 2 != 0:
@@ -122,8 +140,7 @@ def readImage(file_name, lst_srt, lst_end, lst_types, lst_buf, **item_opt):
 		unparsed = file_hndle.read(block_size)
 		hex_data = binascii.hexlify(unparsed).decode('utf-8')
 	
-	print("[+] Recovered ", IMG_CTR, " files.")
-	print("Program completed successfully.")
+	print("[+] Detected ", FILE_CTR, " files.")
 	file_hndle.close()
 	
 def writeImage(item, file_type):

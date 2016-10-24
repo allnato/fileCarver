@@ -1,14 +1,11 @@
 #controller.py
 
-# 764 images in transcend1.dd
-# 2 images in usbimage.dd
-
 from init_images import *
 from file_headers2 import *
 import os
 
 if __name__ == '__main__':
-	file_name = 'generated-images/transcend1.dd' ############################# DEBUG
+	file_name = ''
 	output_path = 'output/'
 	
 	welcome()
@@ -27,7 +24,7 @@ if __name__ == '__main__':
 			file_name = toRawImage("", dev, debug=0)
 		elif inpt == "y":
 			while True:
-				file_name = input("Enter full path and file name of the raw image: ")
+				file_name = input("Enter [full path]/<file name>.<file extension> of the raw image: ")
 				
 				if os.path.isfile(file_name):
 					break
@@ -40,6 +37,6 @@ if __name__ == '__main__':
 	(lst_srt, lst_end, lst_types, lst_buf) = compileRegs()
 	readImage(file_name, lst_srt, lst_end, lst_types, lst_buf)
 	
-	# cleanFiles()
+	cleanFiles(output_path)
 	
 	exit(0)
