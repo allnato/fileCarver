@@ -1,0 +1,74 @@
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/raleway/raleway-regular-webfont.woff') format('woff'),
+    url('../fonts/raleway/raleway-regular-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body{
+  height: 100%;
+}
+
+canvas{
+  position: absolute;
+  z-index: -1;
+}
+
+p{
+  margin-top: 0;
+}
+
+
+html {
+ background: radial-gradient(circle, #fff 0%, #aaa 100%) no-repeat;
+ overflow-x: hidden;
+ overflow-y: hidden;
+}
+
+.logo:after {
+	content:"_";
+	opacity: 0;
+	animation: cursor 1s infinite;
+}
+@keyframes cursor {
+	0% {
+		opacity: 0;
+	}
+	40% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo{
+  margin-bottom: 0;
+  font-family: 'raleway';
+  font-weight: bold;
+}
+
+.raleway{
+  font-family: 'raleway';
+}
+
+#particles-js{
+  background-image: url("");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link rel="stylesheet" href="static/css/materialize.css">
+        <link rel="stylesheet" href="static/css/start.css?version=4">
+
+        <title>File Carver</title>
+    </head>
+
+    <body class="body" id="particles-js">
+        <div class="wrapper">
+            <h1 class="center-align logo ">fileCarver</h1>
+            <p class="center-align ">A PNG, JPG, DOC, and XLS file retriever.</p>
+            <div class="center-align">
+              <form action="/config" method="post">
+                <div class="row">
+                  <button type="submit" class="waves-effect waves-light btn">Select Drive</button>
+                </div>
+              </form>
+              <form action="">
+                <div class="row">
+                  <button class="waves-effect waves-light btn">Exit</button>
+                </div>
+
+              </form>
+            </div>
+        </div>
+    </body>
+
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <!-- normal script imports etc  -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/materialize.min.js"></script>
+    <script src="static/js/particles.js"></script>
+    <script src="static/js/app.js?version=3"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+</html>
