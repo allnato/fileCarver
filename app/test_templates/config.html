@@ -15,6 +15,21 @@
     <body>
         <div class="wrapper">
             <div class="container">
+                <!-- Select a Drive -->
+                <ul class="collection with-header card-panel">
+                    <li class="collection-header">
+                        <h4>Select a Drive:</h4>
+                    </li>
+                    <a id="driveA" class="collection-item">Drive A://</a>
+                    <a id="driveB" class="collection-item">Drive B://</a>
+                    <a id="driveC" class="collection-item">Drive C://</a>
+                    <a id="driveD" class="collection-item">Drive D://</a>
+                    <a id="driveE" class="collection-item">Drive E://</a>
+                </ul>
+                <!-- Selected Drive -->
+                <blockquote>
+                    <p>Selected Drive: <span class="selectedDrive"></span></p>
+                </blockquote>
 
                 <div class="row">
                     <!-- Select Files to retrieve -->
@@ -90,11 +105,34 @@
     <script>if (window.module) module = window.module;</script>
     <script>
         $(document).ready(function() {
+            $('.collection-item').click(function(event) {
+                $('.collection-item').removeClass('active');
+                $(this).addClass('active');
+                $('.selectedDrive').text($(this).text());
+            });
+
+            $('.ulrow').matchHeight();
 
         });
     </script>
 
     <script>
+        const shell = require('electron').shell
+
+        const os = require('os')
+
+        const fileManagerBtn = document.getElementById('open-file-manager')
+
+        fileManagerBtn.addEventListener('click', function(event) {
+            shell.showItemInFolder(os.homedir())
+        })
+
+        $('#open-file-manager').click(function(event) {
+            var aa = document.getElementById('extractFolder').files[0].path
+            console.log(aa);
+        });
+
+
     </script>
 
 

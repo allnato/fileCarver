@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>File Carver</title>
+
+        <link rel="stylesheet" href="../static/css/materialize.min.css">
+        <link rel="stylesheet" href="../static/css/select.css">
+    </head>
+
+    <body class="grey lighten-2">
+      <div class="wrapper">
+        <div class="container">
+          <!-- Select Drive -->
+          <ul class="collection with-header card-panel z-depth-2" id="selectDrive">
+              <li class="collection-header">
+                  <h4>Select a Drive:</h4>
+              </li>
+              <a id="driveA" class="collection-item">Drive A://</a>
+              <a id="driveB" class="collection-item">Drive B://</a>
+              <a id="driveC" class="collection-item">Drive C://</a>
+              <a id="driveD" class="collection-item">Drive D://</a>
+              <a id="driveE" class="collection-item">Drive E://</a>
+          </ul>
+
+          <!-- Selected Drive -->
+          <blockquote>
+              <p>Selected Drive: <span class="selectedDrive"></span></p>
+          </blockquote>
+
+          <!-- Copy Switch -->
+          <div class="copySwitch card-panel z-depth-1">
+            <div class="switch">
+              <label>
+                Copy Raw Image:
+                <input type="checkbox" id="copySwitch">
+                <span class="lever"></span>
+              </label>
+
+              <p class="copyInfo grey-text text-darken-1">
+                Makes a raw image copy of the selcted drive.
+                <span class="amber-text text-darken-2">Warning: 'Takes a lot of time.'</span>
+              </p>
+            </div>
+
+          </div>
+
+          <!-- do Copy -->
+          <div class="doCopy card-panel z-depth-1" id="doCopy">
+            <div class="input-field">
+              <input placeholder="Name of the Raw Image" id="copyName" type="text" class="validate">
+              <label for="first_name">Copy Name</label>
+            </div>
+
+            <button class="btn waves-effect grey lighten-2 text-darken-4 grey-text" id="copyLocationBtn">
+              Set Copy location
+            </button>
+            <p class="copyLocation" id="copyLocationText">No location set</p>
+            <!-- Hidden open file directory -->
+            <input type="file" id="copyLocation" style="display:none" webkitdirectory>
+          </div>
+
+          <!-- To Config -->
+          <div class="toConfig right-align">
+            <button class="btn waves-light waves-effect disabled" id="toConfig">To Config</button>
+          </div>
+
+        </div>
+      </div>
+    </body>
+
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <!-- normal script imports etc  -->
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/materialize.min.js"></script>
+    <script src="../static/js/jquery.matchHeight-min.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+    <script>
+    const shell = require('electron').shell
+
+    const os = require('os')
+
+    const copyLocationBtn = document.getElementById('copyLocationBtn')
+
+    $(document).ready(function() {
+      // Select Drive
+      $('.collection-item').click(function(event) {
+        $('.collection-item').removeClass('active');
+        $(this).addClass('active');
+        $('.selectedDrive').text($(this).text());
+      });
+
+      // Set copy Location
+      // $('#copyLocationBtn').click(function(event) {
+      //   $('#copyLocation').click();
+      // });
+
+
+      // Check for the state of the switch.
+      $('#copySwitch').change(function() {
+        if($(this).is(':checked')){
+          console.log('it is checked');
+          $('#doCopy').show('400');
+        }else {
+          console.log('it is not checked');
+          $('#doCopy').hide('400');
+        }
+      });
+
+      copyLocationBtn.addEventListener('click', function(event) {
+          shell.showItemInFolder(os.homedir())
+      })
+
+      $('#open-file-manager').click(function(event) {
+          var aa = document.getElementById('copyLocation').files[0].path
+          console.log(aa);
+      });
+
+    });
+
+    </script>
+</html>
