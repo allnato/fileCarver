@@ -19,6 +19,10 @@ def config():
 def copy():
     return render_template('loadCopy.html')
 
+@app.route("/extract", methods=['GET','POST'])
+def extract():
+    return render_template('loadExtract.html')
+
 if __name__ == "__main__":
     print('Starting...')
     sys.stdout.flush()
