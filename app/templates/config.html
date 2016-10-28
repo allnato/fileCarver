@@ -9,73 +9,93 @@
 
         <link rel="stylesheet" href="static/css/materialize.min.css">
 
-        <link rel="stylesheet" href="static/css/config.css">
+        <link rel="stylesheet" href="static/css/config.css?version=4">
     </head>
 
-    <body>
+    <body class="grey lighten-2">
         <div class="wrapper">
             <div class="container">
+                <!-- File Panel -->
+                <ul class="collection with-header card-panel z-depth-2 file-panel">
+                    <li class="collection-header">
+                        <h4 class="truncate">Files to Retrieve:</h4>
+                        <div class="switch">
+                          <label>
+                            Mark All
+                            <input type="checkbox" id="markSwitch">
+                            <span class="lever"></span>
+                          </label>
+                        </div>
+                    </li>
+                    <li>
 
-                <div class="row">
-                    <!-- Select Files to retrieve -->
-                    <div class="col m6 s12">
-                        <ul class="collection with-header card-panel file-panel ulrow">
-                            <li class="collection-header">
-                                <h4 class="truncate">Files to Retrieve:</h4>
-                            </li>
-                            <li>
-                                <div class="check">
-                                    <input type="checkbox" class="filled-in" id="png" />
-                                    <label for="png">PNG</label>
-                                </div>
-                                <div class="check">
-                                    <input type="checkbox" class="filled-in" id="jpg" />
-                                    <label for="jpg">JPG</label>
-                                </div>
-                                <div class="check">
-                                    <input type="checkbox" class="filled-in" id="doc" />
-                                    <label for="doc">DOC</label>
-                                </div>
-                                <div class="check">
-                                    <input type="checkbox" class="filled-in" id="xls" />
-                                    <label for="xls">XLS</label>
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="check">
+                          <input type="checkbox" class="filled-in" id="png" value="PNG"/>
+                          <label for="png">PNG</label>
+                        </div>
+                        <div class="check">
+                          <input type="checkbox" class="filled-in" id="jpg" value="JPG"/>
+                          <label for="jpg">JPG</label>
+                        </div>
+                        <div class="check">
+                          <input type="checkbox" class="filled-in" id="doc" value="DOC"/>
+                          <label for="doc">DOC</label>
+                        </div>
+                        <div class="check">
+                          <input type="checkbox" class="filled-in" id="xls" value="XLS"/>
+                          <label for="xls">XLS</label>
+                        </div>
+                        <div class="check">
+                          <input type="checkbox" class="filled-in" id="pdf" value="PDF"/>
+                          <label for="pdf">PDF</label>
+                        </div>
 
-                    </div>
-                    <!--  Recoverd file prefix-->
-                    <div class="col m6 s12">
-                        <ul class="collection with-header card-panel prefix-panel ulrow">
-                            <li class="collection-header">
-                                <h4 class="truncate">Recovered file prefix: </h4>
-                            </li>
-                            <li>
-                                <div class="input-field">
-                                    <input id="prefix" type="text" class="validate">
-                                    <label for="prefix">Prefix</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    </li>
+                </ul>
+
+                <!-- Recovered File Prefix -->
+                <div class="card-panel z-depth-1 file-prefix">
+                  <div class="input-field">
+                    <input type="text" id="filePrefix" name="filePrefix">
+                    <label for="filePrefix">
+                      Recovered file Prefix <span class="amber-text text-darken-2">(Optional)</span>
+                    </label>
+                  </div>
                 </div>
 
-                <!-- Recover(Submit) Button -->
-                <div class="button-panel center-align">
-                    <button class="btn btn-large waves-light waves-effect right-align" id="submit">Recover</button>
+                <!-- Scan Options -->
+                <div class="card-panel z-depth-1 file-scan">
+                  <h5 class="raleway">Scan option: <span class="green-text">(Standard by default)</span></h5>
+                  <hr>
+                  <p>
+                    <input name="scanOption" type="radio" id="fast-scan" />
+                    <label for="fast-scan">Fast Scan</label>
+                  </p>
+
+                  <p>
+                    <input name="scanOption" type="radio" id="std-scan" checked/>
+                    <label for="std-scan">Standard scan</label>
+                  </p>
+
+                  <p>
+                    <input name="scanOption" type="radio" id="deep-scan" />
+                    <label for="deep-scan">Deep Scan</label>
+                  </p>
                 </div>
 
-
-                <div class="button-panel center-align">
-                    <button class="btn btn-large waves-light waves-effect right-align" id="open-file-manager">
-                      Choose Extraction Folder
-                    </button>
+                <!-- Recovered file extraction location -->
+                <div class="card-panel z-depth-1 file-extract">
+                  <button class="btn waves-effect waves-light">Set extraction location:</button>
+                  <blockquote>
+                    <p>
+                      Recovered files will be extracted at: <span class="extract-text"></span>
+                    </p>
+                  </blockquote>
                 </div>
 
-                <div class="input-field">
-                    <input id="extractFolder" type="file" class="" webkitdirectory>
+                <div class="extract-panel center-align">
+                  <button class="btn waves-effect waves-light">EXTRACT!!11</button>
                 </div>
-
             </div>
         </div>
     </body>

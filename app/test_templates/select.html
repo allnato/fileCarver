@@ -27,7 +27,7 @@
           </ul>
 
           <!-- Selected Drive -->
-          <blockquote>
+          <blockquote class="displayDrive">
               <p>Selected Drive: <span class="selectedDrive"></span></p>
           </blockquote>
 
@@ -48,26 +48,40 @@
 
           </div>
 
-          <!-- do Copy -->
+          <!-- Do Copy -->
           <div class="doCopy card-panel z-depth-1" id="doCopy">
+            <!-- Input Copy Name -->
             <div class="input-field">
-              <input placeholder="Name of the Raw Image" id="copyName" type="text" class="validate">
+              <input placeholder="Name of the Raw Image" id="copyName" type="text" class="validate" required>
               <label for="first_name">Copy Name</label>
             </div>
-
+            <!-- Set Copy Location -->
             <button class="btn waves-effect grey lighten-2 text-darken-4 grey-text" id="copyLocationBtn">
               Set Copy location
             </button>
-            <p class="copyLocation" id="copyLocationText">No location set</p>
+            <!-- Displayed Copy Location -->
+            <blockquote>
+              <p class="copyLocationText blue-text" id="copyLocationText">No location set</p>
+            </blockquote>
             <!-- Hidden open file directory -->
             <input type="file" id="copyLocation" style="display:none" webkitdirectory>
           </div>
 
           <!-- To Config -->
           <div class="toConfig right-align">
-            <button class="btn waves-light waves-effect disabled" id="toConfig">To Config</button>
+            <button class="btn waves-light waves-effect" id="toConfig">To Config</button>
           </div>
 
+          <!-- Hidden Forms -->
+          <form action="/copy" method="post" id="doCopyForm" style="display: none">
+            <input type="text" name="drive" class="driveForm" required value="">
+            <input type="text" name="copyPath" id="copyLocationForm" required>
+            <input type="text" name="copyName" id="copyNameForm" required>
+          </form>
+
+          <form action="/config" method="post" id="configForm" style="display: none">
+            <input type="text" name="drive" class="driveForm" required value="">
+          </form>
         </div>
       </div>
     </body>
@@ -82,11 +96,12 @@
     <script>if (window.module) module = window.module;</script>
 
     <script>
-    const shell = require('electron').shell
+    //const shell = require('electron').shell
+    //const os = require('os')
 
-    const os = require('os')
-
-    const copyLocationBtn = document.getElementById('copyLocationBtn')
+    var selectedDrive = null;
+    var copyPathLocation = null;
+    var copyName = null;
 
     $(document).ready(function() {
       // Select Drive
@@ -94,33 +109,64 @@
         $('.collection-item').removeClass('active');
         $(this).addClass('active');
         $('.selectedDrive').text($(this).text());
+        // Copy the the data into the form
+        $('.driveForm').val($(this).text());
+        console.log($('.driveForm').val());
       });
-
-      // Set copy Location
-      // $('#copyLocationBtn').click(function(event) {
-      //   $('#copyLocation').click();
-      // });
-
 
       // Check for the state of the switch.
       $('#copySwitch').change(function() {
         if($(this).is(':checked')){
           console.log('it is checked');
-          $('#doCopy').show('400');
+          $('#doCopy').show('400', function() {
+
+          });
         }else {
           console.log('it is not checked');
-          $('#doCopy').hide('400');
+          $('#doCopy').hide('400', function() {
+
+          });
         }
       });
 
-      copyLocationBtn.addEventListener('click', function(event) {
-          shell.showItemInFolder(os.homedir())
-      })
-
-      $('#open-file-manager').click(function(event) {
-          var aa = document.getElementById('copyLocation').files[0].path
-          console.log(aa);
+      //Set copy Location
+      $('#copyLocationBtn').click(function(event) {
+        $('#copyLocation').click();
       });
+
+      // Change the location display and copy the data into the form
+      $('#copyLocation').change(function(event) {
+          var folderLocation = document.getElementById('copyLocation').files[0].path
+          console.log(folderLocation);
+          $('#copyLocationText').text(folderLocation);
+          $('#copyLocationForm').val(folderLocation);
+      });
+
+      // On key up on name, store the data in the copyName Form
+      $('#copyName').keyup(function(event) {
+        $('#copyNameForm').val($(this).val());
+        console.log($('#copyNameForm').val());
+      });
+
+      $('#toConfig').click(function(event) {
+        if($('#copySwitch').is(':checked')){
+          console.log('GOTO LOADING');
+          if($('#doCopyForm')[0].checkValidity()){
+            $('#doCopyForm').submit();
+          }else {
+            Materialize.toast('Fill up the required fields.', 4000)
+          }
+
+        }else {
+          console.log('GOTO CONFIGURTION');
+          if($('#configForm')[0].checkValidity()){
+            $('#configForm').submit();
+          }else {
+            Materialize.toast('Fill up the required fields.', 4000)
+          }
+        }
+      });
+
 
     });
 

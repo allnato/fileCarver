@@ -10,6 +10,10 @@ html, body{
   height: 100%;
 }
 
+.container{
+  padding-top: 20px;
+}
+
 .raleway{
   font-family: 'raleway';
 }
@@ -30,7 +34,7 @@ html, body{
 }
 
 .displayDrive{
-  width: 70%;
+
   margin: 20px auto;
 }
 
@@ -45,13 +49,13 @@ html, body{
 }
 
 .copySwitch{
-  margin: 45px auto;
-  width: 70%;
+  margin: 30px auto;
+
 }
 
 .doCopy{
-  margin: 45px auto;
-  width: 70%;
+  margin: 30px auto;
+
 }
 
 #doCopy{
@@ -60,7 +64,7 @@ html, body{
 
 .toConfig{
   margin: auto;
-  width: 70%;
+
 }
 
 .copyInfo{
@@ -87,6 +91,6 @@ html, body{
 }
 
 #selectDrive{
-  width: 70%;
+
   margin: 0 auto;
 }

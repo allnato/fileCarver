@@ -8,7 +8,7 @@
         <title>File Carver</title>
 
         <link rel="stylesheet" href="static/css/materialize.min.css">
-        <link rel="stylesheet" href="static/css/select.css?version=2">
+        <link rel="stylesheet" href="static/css/select.css?version=4">
     </head>
 
     <body class="grey lighten-2">
@@ -96,8 +96,8 @@
     <script>if (window.module) module = window.module;</script>
 
     <script>
-    const shell = require('electron').shell
-    const os = require('os')
+    // const shell = require('electron').shell
+    // const os = require('os')
 
     var selectedDrive = null;
     var copyPathLocation = null;
@@ -118,10 +118,14 @@
       $('#copySwitch').change(function() {
         if($(this).is(':checked')){
           console.log('it is checked');
-          $('#doCopy').show('400');
+          $('#doCopy').show('400', function() {
+
+          });
         }else {
           console.log('it is not checked');
-          $('#doCopy').hide('400');
+          $('#doCopy').hide('400', function() {
+
+          });
         }
       });
 
