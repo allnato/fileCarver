@@ -73,14 +73,16 @@
           </div>
 
           <!-- Hidden Forms -->
-          <form action="/copy" method="post" id="doCopyForm" style="display: none">
-            <input type="text" name="drive" class="driveForm" required value="">
+          <form action="/setSelect" method="post" id="doCopyForm" style="display: none">
+            <input type="text" name="drive" class="driveForm" required>
             <input type="text" name="copyPath" id="copyLocationForm" required>
             <input type="text" name="copyName" id="copyNameForm" required>
           </form>
 
-          <form action="/config" method="post" id="configForm" style="display: none">
+          <form action="/setSelect" method="post" id="configForm" style="display: none">
             <input type="text" name="drive" class="driveForm" required value="">
+            <input type="text" name="copyPath">
+            <input type="text" name="copyName">
           </form>
         </div>
       </div>
