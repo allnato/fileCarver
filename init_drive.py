@@ -22,7 +22,7 @@ def listDrive(**item_opt):
 		try:
 			import win32file
 		except:
-			print("Error: There are incomplete dependencies on this computer. Please install pypiwin32.")
+			#print("Error: There are incomplete dependencies on this computer. Please install pypiwin32.") ######## DISPLAY ERROR MESSAGE @to_GUI
 			exit(-1)
 		
 		drive_types = { "0": "Unknown", "1": "No Root Directory", "2": "Removable Disk", "3": "Local Disk", 
@@ -34,7 +34,7 @@ def listDrive(**item_opt):
 				drive_name = drive_types[str(win32file.GetDriveType(c_inst))]
 				lst_fll.append(c_inst + "   " + drive_name)
 	else:
-		print("Platform not yet supported")
+		#print("Platform not yet supported")                             ########### DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
 	
 	return lst_fll

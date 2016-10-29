@@ -18,7 +18,6 @@ def compileRegs(lst_ext, **item_opt):
 		with open(file_name, 'r') as sig_in:
 			lst_sig = sig_in.readlines()
 			
-		lst_ext = _quicksort(lst_ext, 0, len(lst_ext)-1)                  # assumes all input is correct and that the user selected at least 1 file type
 		lst_sig = _quicksort(lst_sig, 0, len(lst_sig)-1)
 		
 		if len(lst_ext) == len(lst_sig):
@@ -33,9 +32,7 @@ def compileRegs(lst_ext, **item_opt):
 					#print("Error: file type " + inst + " is not found")  ################## DISPLAY ERROR MESSAGE @to_GUI
 					exit(-1)
 				while lst_sig:
-					print(inst.upper() + ',')
-					print(lst_sig[0])
-					if re.match(inst.upper() + ',', lst_sig[0]):
+					if re.match(inst + ',', lst_sig[0].lower()):
 						lst_cont = lst_sig[0].strip().lower().split(',')
 						lst_srt.append(re.compile(lst_cont[1].replace(" ", "")))
 						lst_end.append(re.compile(lst_cont[2].replace(" ", "")))
