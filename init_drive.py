@@ -1,11 +1,9 @@
 # init_drive.py
-# attempt to do os.open()
+# attempt to do os.open() and pip install here
 
-import os
-import binascii
+import os, binascii, math, string
 from sys import platform
 from subprocess import check_output
-import string
 
 def listDrive(**item_opt):
 	lst_devs = []
@@ -21,7 +19,11 @@ def listDrive(**item_opt):
 				dev_inst = dev_inst[:dev_inst.find('../../')+6]          #output should be /dev/<dev name>
 				lst_fll.append(dev_inst)
 	elif platform == "win32":
-		import win32file
+		try:
+			import win32file
+		except:
+			print("Error: There are incomplete dependencies on this computer. Please install pypiwin32.")
+			exit(-1)
 		
 		drive_types = { "0": "Unknown", "1": "No Root Directory", "2": "Removable Disk", "3": "Local Disk", 
 		                "4": "Network Drive", "5": "Compact Disc", "6": "RAM Disk" }
@@ -41,15 +43,14 @@ def getDrive(lst_drive, selected_num, **item_opt):                       # selec
 	drive = lst_drive[selected_num]
 	return("\\\\.\\" + drive[:2])
 
-def getDriveProgress(written_size, total_size):                               # give value to view
-	return int(math.ceil(written_size * 1.0/total_size))
+def getDrivePercentProgress(written_size, total_size):                   # give value to view
+	cur_size = written_size*1.0 / total_size * 100
+	return("%.2f" % cur_size)
 
-def toRawImage(dev_path, **item_opt):                                    # returns full path to generated image
-	file_name = 'drive_image.dd'
-	output_path = 'generated-images/'
+def toRawImage(file_name, output_path, dev_path, **item_opt):            # returns full path to generated image
 	written_size = 0
 	
-	total_size = os.stat(dev_path).st_size
+	total_size = 100000000#os.path.getsize(dev_path)
 	
 	if "bs" in item_opt:
 		bs = item_opt["bs"]
@@ -63,7 +64,7 @@ def toRawImage(dev_path, **item_opt):                                    # retur
 			#print("Error: " + output_path + " directory cannot be created\n") ################## DISPLAY ERROR MESSAGE @to_GUI
 			exit(-1)
 	
-		#print("\n[+] Writing to raw image file. This may take a while...")   @to_GUI
+		print("\n[+] Writing to raw image file. This may take a while...")  # @to_GUI
 	
 	file_loc = output_path + file_name
 	
@@ -73,6 +74,6 @@ def toRawImage(dev_path, **item_opt):                                    # retur
 				if img.write(dev.read(bs)) == 0:
 					break
 				written_size = written_size + bs
-				#getDriveProgress(written_size, total_size)      @to_GUI
+				prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
 	
 	return file_loc

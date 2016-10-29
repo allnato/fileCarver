@@ -1,5 +1,7 @@
 # model_app.py
 
+import re
+
 def getScanChoice(scan_num, **item_opt):
 	scan_num = str(scan_num)
 	scan_types = { "1": "fast", "2": "standard", "3": "deep" }
@@ -7,27 +9,41 @@ def getScanChoice(scan_num, **item_opt):
 	return scan_types[scan_num]
 	
 def compileRegs(lst_ext, **item_opt):
-	lst_types = []
 	lst_srt = []
 	lst_end = []
-	lst_cat = []
 	lst_buf = []
-	file_name = 'model/mod_signatures.txt'
-	
-	# sort lst_ext
+	file_name = '..\model\mod_signatures.txt'
 	
 	try:
 		with open(file_name, 'r') as sig_in:
 			lst_sig = sig_in.readlines()
 			
-		for inst in lst_sig:
-			lst_cont = inst.strip().lower().split(',')
-			for ext in lst_ext:                                                  # do binary search here
-				if ext == lst_cont[0]:
-					lst_srt.append(re.compile(lst_cont[1].replace(" ", "")))
-					lst_end.append(re.compile(lst_cont[2].replace(" ", "")))
-					#lst_cat.append(lst_cont[3].upper())
-					lst_buf.append(int(lst_cont[4]) * 2097152)                   # multiply by 2 MB
+		lst_ext = _quicksort(lst_ext, 0, len(lst_ext)-1)                  # assumes all input is correct and that the user selected at least 1 file type
+		lst_sig = _quicksort(lst_sig, 0, len(lst_sig)-1)
+		
+		if len(lst_ext) == len(lst_sig):
+			for inst in lst_sig:
+				lst_cont = inst.strip().lower().split(',')
+				lst_srt.append(re.compile(lst_cont[1].replace(" ", "")))
+				lst_end.append(re.compile(lst_cont[2].replace(" ", "")))
+				lst_buf.append(int(lst_cont[4]) * 2097152)
+		else:
+			for inst in lst_ext:
+				if not lst_sig:
+					#print("Error: file type " + inst + " is not found")  ################## DISPLAY ERROR MESSAGE @to_GUI
+					exit(-1)
+				while lst_sig:
+					print(inst.upper() + ',')
+					print(lst_sig[0])
+					if re.match(inst.upper() + ',', lst_sig[0]):
+						lst_cont = lst_sig[0].strip().lower().split(',')
+						lst_srt.append(re.compile(lst_cont[1].replace(" ", "")))
+						lst_end.append(re.compile(lst_cont[2].replace(" ", "")))
+						lst_buf.append(int(lst_cont[4]) * 2097152)
+						lst_sig.pop(0)
+						break
+					else:
+						lst_sig.pop(0)
 
 	except (OSError, IOError) as e:
 		#print("Error: " + file_name + " cannot be read.")                ################## DISPLAY ERROR MESSAGE @to_GUI
@@ -36,5 +52,35 @@ def compileRegs(lst_ext, **item_opt):
 	return(lst_srt, lst_end, lst_buf)
 
 def namingFile(extract_path, prefix, **item_opt):
-	full_prefix = extract_path + prefix + "["
+	full_prefix = extract_path + "\\" + prefix + "["
 	return full_prefix
+
+def _quicksort(myList, start, end):
+    if start < end:
+        pivot = _partition(myList, start, end)
+        _quicksort(myList, start, pivot-1)
+        _quicksort(myList, pivot+1, end)
+    return myList
+	
+def _partition(myList, start, end):
+    pivot = myList[start]
+    left = start+1
+    right = end
+    done = False
+    
+    while not done:
+        while left <= right and myList[left] <= pivot:
+            left = left + 1
+        while myList[right] >= pivot and right >=left:
+            right = right -1
+        if right < left:
+            done= True
+        else:
+            temp=myList[left]
+            myList[left]=myList[right]
+            myList[right]=temp
+            
+    temp=myList[start]
+    myList[start]=myList[right]
+    myList[right]=temp
+    return right
