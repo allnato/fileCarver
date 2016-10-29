@@ -48,9 +48,9 @@ def getDrivePercentProgress(written_size, total_size):                   # give 
 	return("%.2f" % cur_size)
 
 def toRawImage(file_name, output_path, dev_path, **item_opt):            # returns full path to generated image
+	file_name = file_name + ".dd"                                        # assume that the file_name has no file extension
 	written_size = 0
-	
-	total_size = 100000000#os.path.getsize(dev_path)
+	total_size = getDriveTotal(dev_path)
 	
 	if "bs" in item_opt:
 		bs = item_opt["bs"]
@@ -64,7 +64,7 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 			#print("Error: " + output_path + " directory cannot be created\n") ################## DISPLAY ERROR MESSAGE @to_GUI
 			exit(-1)
 	
-		print("\n[+] Writing to raw image file. This may take a while...")  # @to_GUI
+	#print("\n[+] Writing to raw image file. This may take a while...")  # @to_GUI
 	
 	file_loc = output_path + file_name
 	
@@ -73,7 +73,49 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 			while True:
 				if img.write(dev.read(bs)) == 0:
 					break
-				written_size = written_size + bs
-				prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
+				#written_size = written_size + bs
+				#prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
 	
 	return file_loc
+
+# Author: Giampaolo Rodola' <g.rodola [AT] gmail [DOT] com>
+# License: MIT
+
+def getDriveTotal(dev_path):
+	import collections
+
+	_ntuple_diskusage = collections.namedtuple('usage', 'total used free')
+
+	if hasattr(os, 'statvfs'):  # POSIX
+		def disk_usage(path):
+			st = os.statvfs(path)
+			free = st.f_bavail * st.f_frsize
+			total = st.f_blocks * st.f_frsize
+			used = (st.f_blocks - st.f_bfree) * st.f_frsize
+			return _ntuple_diskusage(total, used, free)
+
+	elif os.name == 'nt':       # Windows
+		import ctypes
+		import sys
+
+		def disk_usage(path):
+			path = path[4:]
+			_, total, free = ctypes.c_ulonglong(), ctypes.c_ulonglong(), \
+							   ctypes.c_ulonglong()
+			if sys.version_info >= (3,) or isinstance(path, unicode):
+				fun = ctypes.windll.kernel32.GetDiskFreeSpaceExW
+			else:
+				fun = ctypes.windll.kernel32.GetDiskFreeSpaceExA
+			ret = fun(path, ctypes.byref(_), ctypes.byref(total), ctypes.byref(free))
+			if ret == 0:
+				raise ctypes.WinError()
+			used = total.value - free.value
+			return _ntuple_diskusage(total.value, used, free.value)
+	else:
+		#raise NotImplementedError("Error: Platform not supported.") ################## DISPLAY ERROR MESSAGE @to_GUI
+		exit(-1)
+
+	disk_usage.__doc__ = __doc__
+	
+	usage = disk_usage(dev_path)
+	return usage.total
