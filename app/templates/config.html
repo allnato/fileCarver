@@ -97,7 +97,7 @@
                 </div>
 
                 <div class="extract-panel center-align">
-                  <button class="btn waves-effect waves-light" type="submit" id="extractBtn">EXTRACT!!11</button>
+                  <button class="btn waves-effect waves-light btn-large" type="button" id="extractBtn">EXTRACT</button>
                 </div>
               </form>
             </div>
@@ -116,10 +116,10 @@
         $(document).ready(function() {
 
           $('#extractBtn').click(function(event) {
-            if($('#extractForm')[0].checkValidity()){
-              $('#extractForm').submit();
-            }else {
+            if(!$('#extractForm')[0].checkValidity() || !checkCheckbox()){
               Materialize.toast('Fill up the required fields.', 4000)
+            }else {
+              $('#extractForm').submit();
             }
           });
 
@@ -144,13 +144,16 @@
               $('#extractLocation').val(folderLocation);
           });
 
-
-
-
         });
-    </script>
 
-    <script>
+        // Check at least one checkbox is checked.
+        function checkCheckbox(){
+          var check = $('input[type=checkbox]:checked').length;
+          if(!check){
+            return false;
+          }
+          return true;
+        }
     </script>
 
 
