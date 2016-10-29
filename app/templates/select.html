@@ -112,7 +112,7 @@
         $(this).addClass('active');
         $('.selectedDrive').text($(this).text());
         // Copy the the data into the form
-        $('.driveForm').val($(this).text());
+        $('.driveForm').val($(this).attr('id'));
         console.log($('.driveForm').val());
       });
 

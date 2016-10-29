@@ -31,6 +31,7 @@ def setSelectGlobal():
     print(selectedDrive, file=sys.stderr)
     print(copyRawPath, file=sys.stderr)
     print(copyRawName, file=sys.stderr)
+    sys.stdout.flush()
     if not name or not path :
         print('redirect to config', file=sys.stderr)
         return redirect('http://localhost:5000/config')
@@ -51,8 +52,17 @@ def copy():
 # Extract retireved files loading page.
 @app.route("/extract", methods=['GET','POST'])
 def extract():
+    fileList = request.form.getlist('checklist')
+    filePrefix = request.form['filePrefix']
+    scanOption = request.form['scanOption']
+    extractLocation = request.form['extractLocation']
+    print(fileList, file=sys.stderr)
+    print(filePrefix, file=sys.stderr)
+    print(scanOption, file=sys.stderr)
+    print(extractLocation, file=sys.stderr)
     return render_template('loadExtract.html')
 
+# Set the drive, rawpath, and rawname global variables.
 def setSelect(drive, rawPath = None, rawName = None):
     global selectedDrive
     global copyRawPath
