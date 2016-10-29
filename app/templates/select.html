@@ -19,11 +19,9 @@
               <li class="collection-header">
                   <h4>Select a Drive:</h4>
               </li>
-              <a id="driveA" class="collection-item">Drive A://</a>
-              <a id="driveB" class="collection-item">Drive B://</a>
-              <a id="driveC" class="collection-item">Drive C://</a>
-              <a id="driveD" class="collection-item">Drive D://</a>
-              <a id="driveE" class="collection-item">Drive E://</a>
+              {% for drives in drive_list %}
+              <a class="collection-item">{{drives}}</a>
+              {% endfor %}
           </ul>
 
           <!-- Selected Drive -->

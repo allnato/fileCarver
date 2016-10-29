@@ -1,4 +1,8 @@
-import sys
+import sys, os
+sys.path.append('../')
+from head_file import *
+from init_drive import *
+from model_app import *
 from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
@@ -15,7 +19,7 @@ def start():
 # Select a drive page.
 @app.route("/select", methods=['GET','POST'])
 def select():
-    return render_template('select.html')
+    return render_template('select.html', drive_list = listDrive())
 
 # Set the user input in the select page
 @app.route("/setSelect", methods=['GET', 'POST'])

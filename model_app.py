@@ -1,26 +1,26 @@
 # model_app.py
 
-import re
+import sys, re
 
 def getScanChoice(scan_num, **item_opt):
 	scan_num = str(scan_num)
 	scan_types = { "1": "fast", "2": "standard", "3": "deep" }
-	
+
 	return scan_types[scan_num]
-	
+
 def compileRegs(lst_ext, **item_opt):
 	lst_srt = []
 	lst_end = []
 	lst_buf = []
 	file_name = '..\model\mod_signatures.txt'
-	
+
 	try:
 		with open(file_name, 'r') as sig_in:
 			lst_sig = sig_in.readlines()
-			
+
 		lst_ext = _quicksort(lst_ext, 0, len(lst_ext)-1)                  # assumes all input is correct and that the user selected at least 1 file type
 		lst_sig = _quicksort(lst_sig, 0, len(lst_sig)-1)
-		
+
 		if len(lst_ext) == len(lst_sig):
 			for inst in lst_sig:
 				lst_cont = inst.strip().lower().split(',')
@@ -48,7 +48,7 @@ def compileRegs(lst_ext, **item_opt):
 	except (OSError, IOError) as e:
 		#print("Error: " + file_name + " cannot be read.")                ################## DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
-	
+
 	return(lst_srt, lst_end, lst_buf)
 
 def namingFile(extract_path, prefix, **item_opt):
@@ -61,13 +61,13 @@ def _quicksort(myList, start, end):
         _quicksort(myList, start, pivot-1)
         _quicksort(myList, pivot+1, end)
     return myList
-	
+
 def _partition(myList, start, end):
     pivot = myList[start]
     left = start+1
     right = end
     done = False
-    
+
     while not done:
         while left <= right and myList[left] <= pivot:
             left = left + 1
@@ -79,7 +79,7 @@ def _partition(myList, start, end):
             temp=myList[left]
             myList[left]=myList[right]
             myList[right]=temp
-            
+
     temp=myList[start]
     myList[start]=myList[right]
     myList[right]=temp
