@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/raleway/raleway-regular-webfont.woff') format('woff'),
+    url('../fonts/raleway/raleway-regular-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body{
+  height: 100%;
+}
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.raleway{
+  font-family: 'raleway';
+  font-weight: bold;
+}

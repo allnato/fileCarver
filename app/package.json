@@ -1,0 +1,39 @@
+{
+  "name": "filerecovery",
+  "version": "1.0.0",
+  "description": "A python file recovery tool with electron as GUI",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ollen/FileRecovery.git"
+  },
+  "keywords": [
+    "png",
+    "pdf",
+    "jpg",
+    "doc",
+    "xls",
+    "file",
+    "data",
+    "recovery",
+    "carving",
+    "carver",
+    "forensics"
+  ],
+  "author": "Allendale Nato <natoallendale@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ollen/FileRecovery/issues"
+  },
+  "homepage": "https://github.com/Ollen/FileRecovery#readme",
+  "dependencies": {
+    "electron-prebuilt": "^1.3.8",
+    "request": "^2.76.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {}
+}

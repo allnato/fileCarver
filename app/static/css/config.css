@@ -1,0 +1,84 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/raleway/raleway-regular-webfont.woff') format('woff'),
+    url('../fonts/raleway/raleway-regular-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body{
+  height: 100%;
+}
+
+.raleway{
+  font-family: 'raleway';
+}
+
+.collection-header h4{
+  font-size: 3.0rem !important;
+  font-family: 'raleway';
+  font-weight: bolder !important;
+}
+
+.switch{
+  display: inline-block;
+}
+
+.file-panel{
+  margin: 10px auto;
+
+}
+
+.file-prefix{
+  margin:30px auto;
+
+}
+
+.file-extract{
+  margin: 30px auto;
+
+}
+
+.button-panel{
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.extract-panel{
+  margin: auto;
+
+}
+
+.container{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.file-scan {
+  margin: 30px auto;
+
+}
+
+.file-scan h5{
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.file-scan h5 span{
+  font-weight: 100;
+}
+
+blockquote p{
+  font-weight: bold;
+  font-weight: bolder;
+}
+
+.check{
+  display: inline-block;
+  padding: 15px;
+}
+
+.selectedDrive{
+  text-decoration: underline;
+  color: green;
+}

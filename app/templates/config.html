@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>File Carver</title>
+
+        <link rel="stylesheet" href="static/css/materialize.min.css">
+
+        <link rel="stylesheet" href="static/css/config.css?version=5">
+    </head>
+
+    <body class="grey lighten-2">
+        <div class="wrapper">
+            <div class="container">
+              <form action="/extract" method="post" id="extractForm">
+                <!-- File Panel -->
+                <ul class="collection with-header card-panel z-depth-2 file-panel">
+                  <li class="collection-header">
+                    <h4 class="truncate">Files to Retrieve:</h4>
+                    <div class="switch">
+                      <label>
+                        Mark All
+                        <input type="checkbox" id="markSwitch">
+                        <span class="lever"></span>
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+
+                    <div class="check">
+                      <input type="checkbox" class="filled-in" id="png" name="checklist" value="PNG"/>
+                      <label for="png">PNG</label>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" class="filled-in" id="jpg" name="checklist" value="JPG"/>
+                      <label for="jpg">JPG</label>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" class="filled-in" id="doc" name="checklist" value="DOC"/>
+                      <label for="doc">DOC</label>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" class="filled-in" id="xls" name="checklist" value="XLS"/>
+                      <label for="xls">XLS</label>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" class="filled-in" id="pdf" name="checklist" value="PDF"/>
+                      <label for="pdf">PDF</label>
+                    </div>
+
+                  </li>
+                </ul>
+
+                <!-- Recovered File Prefix -->
+                <div class="card-panel z-depth-1 file-prefix">
+                  <div class="input-field">
+                    <input type="text" id="filePrefix" name="filePrefix">
+                    <label for="filePrefix">
+                      Recovered file Prefix <span class="amber-text text-darken-2">(Optional)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Scan Options -->
+                <div class="card-panel z-depth-1 file-scan">
+                  <h5 class="raleway">Scan option: <span class="green-text">(Standard by default)</span></h5>
+                  <hr>
+                  <p>
+                    <input name="scanOption" type="radio" id="fast-scan" required/>
+                    <label for="fast-scan">Fast Scan</label>
+                  </p>
+
+                  <p>
+                    <input name="scanOption" type="radio" id="std-scan" checked/>
+                    <label for="std-scan">Standard scan</label>
+                  </p>
+
+                  <p>
+                    <input name="scanOption" type="radio" id="deep-scan" />
+                    <label for="deep-scan">Deep Scan</label>
+                  </p>
+                </div>
+
+                <!-- Recovered file extraction location -->
+                <div class="card-panel z-depth-1 file-extract">
+                  <button class="btn waves-effect waves-light" id="extractLocationBtn">Set extraction location:</button>
+                  <blockquote>
+                    <p>
+                      Recovered files will be extracted at: <span class="extract-text"></span>
+                    </p>
+                  </blockquote>
+                  <input type="file" webkitdirectory style="display:none" id="openFileMng">
+                  <input type="text" id="extractLocation" required value="" style="display:none" name="extractLocation">
+                </div>
+
+                <div class="extract-panel center-align">
+                  <button class="btn waves-effect waves-light btn-large" type="button" id="extractBtn">EXTRACT</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </body>
+
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <!-- normal script imports etc  -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/materialize.min.js"></script>
+    <script src="static/js/jquery.matchHeight-min.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+    <script>
+        $(document).ready(function() {
+
+          $('#extractBtn').click(function(event) {
+            if(!$('#extractForm')[0].checkValidity() || !checkCheckbox()){
+              Materialize.toast('Fill up the required fields.', 4000)
+            }else {
+              $('#extractForm').submit();
+            }
+          });
+
+          $('#markSwitch').change(function() {
+            if($(this).is(':checked')){
+              $('input:checkbox').prop('checked', true);
+            }else {
+              $('input:checkbox').prop('checked', false);
+            }
+          });
+
+          //Set extract Location
+          $('#extractLocationBtn').click(function(event) {
+            $('#openFileMng').click();
+          });
+
+          // Change the location display and copy the data into the form
+          $('#openFileMng').change(function(event) {
+              var folderLocation = document.getElementById('openFileMng').files[0].path
+              console.log(folderLocation);
+              $('.extract-text').text(folderLocation);
+              $('#extractLocation').val(folderLocation);
+          });
+
+        });
+
+        // Check at least one checkbox is checked.
+        function checkCheckbox(){
+          var check = $('input[type=checkbox]:checked').length;
+          if(!check){
+            return false;
+          }
+          return true;
+        }
+    </script>
+
+
+</html>
