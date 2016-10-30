@@ -17,7 +17,8 @@
       <h2 class="center-align raleway">
         Extracting: <span class="percent">0</span>%
       </h2>
-      
+      <p>File(s) Recovered: <span class="recovered">0</span></p>
+
     </div>
 
   </body>
@@ -32,6 +33,17 @@
   <script>if (window.module) module = window.module;</script>
 
   <script type="text/javascript">
+    var progress = new EventSource("/scanExtract");
+    progress.onmessage = function(event){
+      changePercent(event.data);
+      $('.recovered').text(event.data)
+      if(event.data == '100.00'){
+        progress.close()
+        console.log("TAPOS WOOHOO");
+      }
+    }
+
+
     $(document).ready(function() {
       // var i = 0;
       // function myLoop () {

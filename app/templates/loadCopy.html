@@ -34,10 +34,10 @@
 
   <script type="text/javascript">
 
-  var progress = new EventSource("/progress");
+  var progress = new EventSource("/scanExtract");
   progress.onmessage = function(event){
     changePercent(event.data);
-    if(event.data == '100'){
+    if(event.data == '100.00'){
       progress.close()
     }
   }

@@ -18,6 +18,8 @@ extractLocation = None
 
 fullDriveList = None
 
+drive = None
+
 # Start page of the application
 @app.route("/")
 def start():
@@ -51,7 +53,6 @@ def setSelectGlobal():
 # Configure extraction page.
 @app.route("/config", methods=['GET','POST'])
 def config():
-
     return render_template('config.html')
 
 # Copy raw image loading page.
@@ -65,26 +66,23 @@ def extract():
     setConfig(request.form.getlist('checklist'),request.form['scanOption'],
     request.form['extractLocation'], request.form['filePrefix'])
 
-    # Call compileRegs
-    (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
-    # CompileRegs Debug
-    print(lst_srt, file=sys.stderr)
-    print(lst_end, file=sys.stderr)
-    print(lst_buf, file=sys.stderr)
+    # # Call compileRegs
+    # (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
+    # # CompileRegs Debug
+    # print(lst_srt, file=sys.stderr)
+    # print(lst_end, file=sys.stderr)
+    # print(lst_buf, file=sys.stderr)
 
     # get Drive Location
-    drive = getDrive(fullDriveList, int(selectedDrive))
 
-    print(drive, file=sys.stderr)
+
+    #print(drive, file=sys.stderr)
     print(extractLocation, file=sys.stderr)
     print(fileList, file=sys.stderr)
     print(scanOption, file=sys.stderr)
 
     if scanOption == "1":
-        print('hi', file=sys.stderr)
-        fullPrefix = namingFile(extractLocation, filePrefix)
-        fastReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf)
-    print('hello', file=sys.stderr)
+        print('[+] Initializing Fast Scan', file=sys.stderr)
 
     return render_template('loadExtract.html')
 
@@ -103,6 +101,17 @@ def progress():
             time.sleep(0.1)
             yield "data:" + str(x) + "\n\n"
     return Response(generate(), mimetype= 'text/event-stream')
+
+@app.route('/scanExtract')
+def scanExtract():
+    global drive
+    drive = getDrive(fullDriveList, int(selectedDrive))
+    (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
+    if scanOption == '1':
+        print ('PRINTING HEHE', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(fastReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
 
 # Set the drive, rawpath, and rawname global variables.
 def setSelect(drive, rawPath = None, rawName = None):
