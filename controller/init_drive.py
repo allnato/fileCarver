@@ -3,27 +3,35 @@
 
 import os, binascii, math, string
 from sys import platform
-from subprocess import check_output
+import subprocess
 
 def listDrive(**item_opt):
-	lst_devs = []
 	lst_fll = []
 	
 	if platform == "linux" or platform == "linux2":
-		unparsed = check_output(['ls -l /dev/disk/by-id/usb*'])
+		lst_temp = []
+		lst_devs = []
 		
-		lst_devs = unparsed.split("\n")
+		proc = subprocess.Popen("df | grep ^/dev/", stdout=subprocess.PIPE, shell=True)
+		(unparsed, err) = proc.communicate()
+		
+		lst_devs = unparsed.decode('utf-8').split("\n")
 		
 		for dev_inst in lst_devs:
-			if dev_inst:
-				dev_inst = dev_inst[:dev_inst.find('../../')+6]          #output should be /dev/<dev name>
-				lst_fll.append(dev_inst)
+			lst_temp = dev_inst.split()    #output should be /dev/<dev name>
+			if lst_temp:
+				lst_fll.append(lst_temp[0] + "   " + lst_temp[5])
+				
 	elif platform == "win32":
 		try:
 			import win32file
 		except:
-			#print("Error: There are incomplete dependencies on this computer. Please install pypiwin32.") ######## DISPLAY ERROR MESSAGE @to_GUI
-			exit(-1)
+			#print("Error: There are incomplete dependencies on this computer. Pypiwin32 will be installed.") ######## DISPLAY ERROR MESSAGE @to_GUI
+			try:
+				subprocess.Popen("pip install pypiwin32", shell=True)
+			except:
+				#print("Error: Pypiwin32 cannot be installed.")
+				exit(-1)
 		
 		drive_types = { "0": "Unknown", "1": "No Root Directory", "2": "Removable Disk", "3": "Local Disk", 
 		                "4": "Network Drive", "5": "Compact Disc", "6": "RAM Disk" }
@@ -41,7 +49,13 @@ def listDrive(**item_opt):
 
 def getDrive(lst_drive, selected_num, **item_opt):                       # selected_num from GUI; lst_drive from backend
 	drive = lst_drive[selected_num]
-	return("\\\\.\\" + drive[:2])
+	if platform == "linux" or platform == "linux2":
+		return drive.split()[0]
+	elif platform == "win32":
+		return("\\\\.\\" + drive[:2])
+	else:
+		#print("Platform not yet supported")                             ########### DISPLAY ERROR MESSAGE @to_GUI
+		exit(-1)
 
 def getDrivePercentProgress(written_size, total_size):                   # give value to view
 	cur_size = written_size*1.0 / total_size * 100
@@ -51,6 +65,7 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 	file_name = file_name + ".dd"                                        # assume that the file_name has no file extension
 	written_size = 0
 	total_size = getDriveTotal(dev_path)
+	output_path = os.path.normcase(output_path)
 	
 	if "bs" in item_opt:
 		bs = item_opt["bs"]
@@ -86,15 +101,17 @@ def getDriveTotal(dev_path):
 
 	_ntuple_diskusage = collections.namedtuple('usage', 'total used free')
 
-	if hasattr(os, 'statvfs'):  # POSIX
+	if platform == "linux" or platform == "linux2":
+		import shutil
+		
 		def disk_usage(path):
-			st = os.statvfs(path)
-			free = st.f_bavail * st.f_frsize
-			total = st.f_blocks * st.f_frsize
-			used = (st.f_blocks - st.f_bfree) * st.f_frsize
+			st = shutil.disk_usage(path)
+			free = st.free * 15.1898
+			total = st.total * 15.1898
+			used = st.used * 15.1898
 			return _ntuple_diskusage(total, used, free)
 
-	elif os.name == 'nt':       # Windows
+	elif platform == "win32":
 		import ctypes
 		import sys
 

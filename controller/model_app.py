@@ -1,6 +1,6 @@
 # model_app.py
 
-import re
+import re, os
 
 def getScanChoice(scan_num, **item_opt):
 	scan_num = str(scan_num)
@@ -12,7 +12,7 @@ def compileRegs(lst_ext, **item_opt):
 	lst_srt = []
 	lst_end = []
 	lst_buf = []
-	file_name = '..\model\mod_signatures.txt'
+	file_name = os.path.join("..", "model", "mod_signatures.txt")
 	
 	try:
 		with open(file_name, 'r') as sig_in:
@@ -49,7 +49,7 @@ def compileRegs(lst_ext, **item_opt):
 	return(lst_srt, lst_end, lst_buf)
 
 def namingFile(extract_path, prefix, **item_opt):
-	full_prefix = extract_path + "\\" + prefix + "["
+	full_prefix = os.path.join(extract_path, prefix) + "["
 	return full_prefix
 
 def _quicksort(myList, start, end):
