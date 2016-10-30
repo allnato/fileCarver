@@ -38,8 +38,13 @@ def headFile(**item_opt):
 	print(lst_srt)
 	print(lst_end)
 	print(lst_buf)
-	fastReadImage("\\\\.\\E:", "../output/test[", lst_srt, lst_end, ["doc", "jpg", "pdf", "png", "xls"], lst_buf)
+	if platform == "linux" or platform == "linux2":
+		fastReadImage("/dev/sdb1", "../output/test[", lst_srt, lst_end, ["doc", "jpg", "pdf", "png", "xls"], lst_buf)
+	elif platform == "win32":
+		fastReadImage("\\\\.\\H:", "../output/test[", lst_srt, lst_end, ["doc", "jpg", "pdf", "png", "xls"], lst_buf)
+	else:
+		exit(0)
 	
-#modelApp()
-#initDrive()
+modelApp()
+initDrive()
 headFile()
