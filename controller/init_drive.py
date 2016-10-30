@@ -1,27 +1,27 @@
 # init_drive.py
 # attempt to do os.open() and pip install here
 
-import os, binascii, math, string
+import sys, os, binascii, math, string
 from sys import platform
 import subprocess
 
 def listDrive(**item_opt):
 	lst_fll = []
-	
+
 	if platform == "linux" or platform == "linux2":
 		lst_temp = []
 		lst_devs = []
-		
+
 		proc = subprocess.Popen("df | grep ^/dev/", stdout=subprocess.PIPE, shell=True)
 		(unparsed, err) = proc.communicate()
-		
+
 		lst_devs = unparsed.decode('utf-8').split("\n")
-		
+
 		for dev_inst in lst_devs:
 			lst_temp = dev_inst.split()    #output should be /dev/<dev name>
 			if lst_temp:
 				lst_fll.append(lst_temp[0] + "   " + lst_temp[5])
-				
+
 	elif platform == "win32":
 		try:
 			import win32file
@@ -32,10 +32,10 @@ def listDrive(**item_opt):
 			except:
 				#print("Error: Pypiwin32 cannot be installed.")
 				exit(-1)
-		
-		drive_types = { "0": "Unknown", "1": "No Root Directory", "2": "Removable Disk", "3": "Local Disk", 
+
+		drive_types = { "0": "Unknown", "1": "No Root Directory", "2": "Removable Disk", "3": "Local Disk",
 		                "4": "Network Drive", "5": "Compact Disc", "6": "RAM Disk" }
-		
+
 		for c_inst in string.ascii_lowercase:
 			if (win32file.GetLogicalDrives() >> (ord(c_inst.upper()) - 65) & 1) != 0:
 				c_inst = c_inst.upper() + ":\\"
@@ -44,7 +44,7 @@ def listDrive(**item_opt):
 	else:
 		#print("Platform not yet supported")                             ########### DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
-	
+
 	return lst_fll
 
 def getDrive(lst_drive, selected_num, **item_opt):                       # selected_num from GUI; lst_drive from backend
@@ -66,31 +66,32 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 	written_size = 0
 	total_size = getDriveTotal(dev_path)
 	output_path = os.path.normcase(output_path)
-	
+
 	if "bs" in item_opt:
 		bs = item_opt["bs"]
 	else:
 		bs = 1048576
-	
+
 	if not os.path.isdir(output_path):
 		try:
 			os.makedirs(output_path)
 		except OSError:
 			#print("Error: " + output_path + " directory cannot be created\n") ################## DISPLAY ERROR MESSAGE @to_GUI
 			exit(-1)
-	
+
 	#print("\n[+] Writing to raw image file. This may take a while...")  # @to_GUI
-	
+
 	file_loc = output_path + file_name
-	
+
 	with open(dev_path,'rb') as dev:
 		with open(file_loc, 'wb') as img:
 			while True:
 				if img.write(dev.read(bs)) == 0:
 					break
-				#written_size = written_size + bs
-				#prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
-	
+				written_size = written_size + bs
+				prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
+				yield "data:" + str(prog) + "\n\n"
+
 	return file_loc
 
 # Author: Giampaolo Rodola' <g.rodola [AT] gmail [DOT] com>
@@ -103,7 +104,7 @@ def getDriveTotal(dev_path):
 
 	if platform == "linux" or platform == "linux2":
 		import shutil
-		
+
 		def disk_usage(path):
 			st = shutil.disk_usage(path)
 			free = st.free * 15.1898
@@ -133,6 +134,6 @@ def getDriveTotal(dev_path):
 		exit(-1)
 
 	disk_usage.__doc__ = __doc__
-	
+
 	usage = disk_usage(dev_path)
 	return usage.total

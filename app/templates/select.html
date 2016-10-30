@@ -138,7 +138,7 @@
 
       // Change the location display and copy the data into the form
       $('#copyLocation').change(function(event) {
-          var folderLocation = document.getElementById('copyLocation').files[0].path
+          var folderLocation = document.getElementById('copyLocation').files[0].path + "\\"
           console.log(folderLocation);
           $('#copyLocationText').text(folderLocation);
           $('#copyLocationForm').val(folderLocation);

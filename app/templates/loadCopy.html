@@ -21,6 +21,10 @@
       <button class="btn" id="jButton">Fire</button>
     </div>
 
+    <form action="/config" class="toConfig" style="display:hidden">
+
+    </form>
+
   </body>
 
   <!-- Insert this line above script imports  -->
@@ -34,11 +38,12 @@
 
   <script type="text/javascript">
 
-  var progress = new EventSource("/scanExtract");
+  var progress = new EventSource("/copyImage");
   progress.onmessage = function(event){
     changePercent(event.data);
     if(event.data == '100.00'){
       progress.close()
+      $('.toConfig').submit();
     }
   }
 

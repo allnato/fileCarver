@@ -35,14 +35,17 @@ def select():
 # Set the user input in the select page
 @app.route("/setSelect", methods=['GET', 'POST'])
 def setSelectGlobal():
-    drive = request.form['drive']
+    global drive
+    driveText = request.form['drive']
     path = request.form['copyPath']
     name = request.form['copyName']
-    setSelect(drive, path, name)
+    setSelect(driveText, path, name)
     print(selectedDrive, file=sys.stderr)
     print(copyRawPath, file=sys.stderr)
     print(copyRawName, file=sys.stderr)
     sys.stdout.flush()
+
+    drive = getDrive(fullDriveList, int(selectedDrive))
     if not name or not path :
         print('redirect to config', file=sys.stderr)
         return redirect('http://localhost:5000/config')
@@ -66,16 +69,6 @@ def extract():
     setConfig(request.form.getlist('checklist'),request.form['scanOption'],
     request.form['extractLocation'], request.form['filePrefix'])
 
-    # # Call compileRegs
-    # (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
-    # # CompileRegs Debug
-    # print(lst_srt, file=sys.stderr)
-    # print(lst_end, file=sys.stderr)
-    # print(lst_buf, file=sys.stderr)
-
-    # get Drive Location
-
-
     #print(drive, file=sys.stderr)
     print(extractLocation, file=sys.stderr)
     print(fileList, file=sys.stderr)
@@ -86,32 +79,20 @@ def extract():
 
     return render_template('loadExtract.html')
 
-@app.route('/jURL')
-def ajax():
-    result = "Hello"
-    return jsonify(result)
-
-@app.route('/progress')
-def progress():
-    def generate():
-        x = 0
-        while x < 100:
-            print (x)
-            x = x + 1
-            time.sleep(0.1)
-            yield "data:" + str(x) + "\n\n"
-    return Response(generate(), mimetype= 'text/event-stream')
-
 @app.route('/scanExtract')
 def scanExtract():
-    global drive
-    drive = getDrive(fullDriveList, int(selectedDrive))
     (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
     if scanOption == '1':
         print ('PRINTING HEHE', file=sys.stderr)
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(fastReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
+
+@app.route("/copyImage")
+def copyImage():
+    return Response(toRawImage(copyRawName, copyRawPath, drive), mimetype= 'text/event-stream')
+
+
 
 # Set the drive, rawpath, and rawname global variables.
 def setSelect(drive, rawPath = None, rawName = None):
