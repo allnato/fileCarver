@@ -17,6 +17,8 @@
       <h2 class="center-align raleway">
         Copying: <span class="percent">0</span>%
       </h2>
+      <p class="jText"></p>
+      <button class="btn" id="jButton">Fire</button>
     </div>
 
   </body>
@@ -31,6 +33,16 @@
   <script>if (window.module) module = window.module;</script>
 
   <script type="text/javascript">
+
+  var progress = new EventSource("/progress");
+  progress.onmessage = function(event){
+    changePercent(event.data);
+    if(event.data == '100'){
+      progress.close()
+    }
+  }
+
+
     $(document).ready(function() {
       // var i = 0;
       // function myLoop () {
@@ -44,11 +56,29 @@
       // }
       //
       // myLoop();
+
     });
 
     function changePercent(i){
       $('.percent').text(i);
     }
+
+    // $('#jButton').click(function(event) {
+    //   $.ajax({
+    //     url: '/jURL',
+    //     type: 'GET',
+    //     dataType: 'json'
+    //   })
+    //   .done(function(data) {
+    //     console.log("success");
+    //     text = $('.jText').text()
+    //     $('.jText').text(text + " " + data)
+    //   })
+    //   .fail(function() {
+    //     console.log("error");
+    //   })
+    //
+    // });
   </script>
 
 </html>

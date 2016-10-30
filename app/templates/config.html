@@ -86,10 +86,10 @@
 
                 <!-- Recovered file extraction location -->
                 <div class="card-panel z-depth-1 file-extract">
-                  <button class="btn waves-effect waves-light" id="extractLocationBtn">Set extraction location:</button>
+                  <button class="btn waves-effect waves-light" id="extractLocationBtn" type="button">Set extraction location:</button>
                   <blockquote>
                     <p>
-                      Recovered files will be extracted at: <span class="extract-text"></span>
+                      Recovered files will be extracted at: <span class="extract-text green-text"></span>
                     </p>
                   </blockquote>
                   <input type="file" webkitdirectory style="display:none" id="openFileMng">
@@ -138,10 +138,10 @@
 
           // Change the location display and copy the data into the form
           $('#openFileMng').change(function(event) {
-              var folderLocation = document.getElementById('openFileMng').files[0].path
-              console.log(folderLocation);
+              var folderLocation = document.getElementById('openFileMng').files[0].path + "\\"
               $('.extract-text').text(folderLocation);
               $('#extractLocation').val(folderLocation);
+              console.log($('#extractLocation').val());
           });
 
         });
