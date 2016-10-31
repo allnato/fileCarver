@@ -7,7 +7,7 @@ The recovery of the files is written purely in **Python** that uses **Electron**
 More information about the program architecture can be found [here](https://www.fyears.org/2015/06/electron-as-gui-of-python-apps.html).
 
 ## Getting Started
-This program requires [nodejs]https://nodejs.org/en/ and [Python](https://www.python.org/) installed in the machine.
+This program requires [nodejs](https://nodejs.org/en/) and [Python](https://www.python.org/) installed in the machine.
 
 ### Prerequisites
 Install flask to render web pages using Python.
