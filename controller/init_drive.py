@@ -59,7 +59,7 @@ def getDrive(lst_drive, selected_num, **item_opt):                       # selec
 
 def getDrivePercentProgress(written_size, total_size):                   # give value to view
 	cur_size = written_size*1.0 / total_size * 100
-	return("%.2f" % cur_size)
+	return(str("%.2f" % cur_size))
 
 def toRawImage(file_name, output_path, dev_path, **item_opt):            # returns full path to generated image
 	file_name = file_name + ".dd"                                        # assume that the file_name has no file extension
