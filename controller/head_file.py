@@ -23,10 +23,15 @@ def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 	try:
 		file_hndle = open(file_name, 'rb')
 	except (OSError, IOError) as e:
-		#print("Error: " + file_name + " cannot be read.")               ################## DISPLAY ERROR MESSAGE @to_GUI
+		print("Error: " + file_name + " cannot be read.", file=sys.stderr)               ################## DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
 
-	block_total = int(math.ceil(getDriveTotal(file_name) / block_size))
+	if re.match(r'/dev/s', file_name) or re.match(r'\\\\.\\',file_name):
+		raw_total = getDriveTotal(file_name)
+	else:
+		raw_total = os.path.getsize(file_name)
+
+	block_total = int(math.ceil(raw_total / block_size))
 	unparsed = file_hndle.read(block_size)
 	hex_data = binascii.hexlify(unparsed).decode('utf-8')
 
@@ -37,7 +42,7 @@ def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 
 	while block_num <= block_total:
 		prog, file_ctr = getReadProgress(block_num, block_total, file_ctr)     # @to_GUI
-		yield "data:" + str(prog) + "\n\n"
+		yield "data:" + str(prog) + " " + str(file_ctr) +"\n\n"
 		for i in range(0, type_ctr):
 			match = lst_srt[i].search(hex_data)
 			if match:

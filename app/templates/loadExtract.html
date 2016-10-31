@@ -13,8 +13,8 @@
 
   <body class="grey lighten-3">
     <div class="loading center-align">
-      <img src="static/svg/gears.svg" alt="">
-      <h2 class="center-align raleway">
+      <img src="static/svg/magnify.svg" alt="">
+      <h2 class="center-align raleway extracting">
         Extracting: <span class="percent">0</span>%
       </h2>
       <p>File(s) Recovered: <span class="recovered">0</span></p>
@@ -33,30 +33,34 @@
   <script>if (window.module) module = window.module;</script>
 
   <script type="text/javascript">
-    var progress = new EventSource("/scanExtract");
-    progress.onmessage = function(event){
-      changePercent(event.data);
-      $('.recovered').text(event.data)
-      if(event.data == '100.00'){
-        progress.close()
-        console.log("TAPOS WOOHOO");
-      }
-    }
 
+    var remote = require('electron').remote;
+    var shell = remote.shell;
 
     $(document).ready(function() {
-      // var i = 0;
-      // function myLoop () {
-      //    setTimeout(function () {
-      //     changePercent(i);
-      //       i++;
-      //       if (i <= 100) {
-      //          myLoop();
-      //       }
-      //    }, 500)
-      // }
-      //
-      // myLoop();
+      var progress = null;
+      var mode = {{ copy }};
+      var location = "{{ location }}"
+      console.log(location);
+      if(mode == '1'){
+        progress = new EventSource("/scanExtractCopy")
+      }else{
+        progress = new EventSource("/scanExtract");
+      }
+
+      progress.onmessage = function(event){
+        var res = (event.data).split(" ")
+        changePercent(res[0]);
+        $('.recovered').text(res[1])
+        if(res[0] == '100.00'){
+          console.log("Finished Extracting");
+          shell.showItemInFolder(location)
+          $('.extracting').text('Done')
+          $('percent').text('')
+          $('.extracting').addClass('green-text')
+          progress.close()
+        }
+      }
     });
 
     function changePercent(i){

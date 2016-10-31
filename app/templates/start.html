@@ -24,7 +24,7 @@
               </form>
               <form action="">
                 <div class="row">
-                  <button class="waves-effect waves-light btn">Exit</button>
+                  <button class="waves-effect waves-light btn exit-btn" type="button">Exit</button>
                 </div>
 
               </form>
@@ -41,5 +41,14 @@
     <script src="static/js/app.js?version=3"></script>
     <!-- Insert this line after script imports -->
     <script>if (window.module) module = window.module;</script>
+
+    <script>
+      var remote = require('electron').remote;
+
+      $('.exit-btn').click(function() {
+        var window = remote.getCurrentWindow();
+        window.close();
+      });
+    </script>
 
 </html>

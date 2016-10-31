@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, redirect, jsonify, Response
 app = Flask(__name__)
 
 # Global Variables
+doCopy = None
 selectedDrive = None
 copyRawPath = None
 copyRawName = None
@@ -39,13 +40,16 @@ def setSelectGlobal():
     driveText = request.form['drive']
     path = request.form['copyPath']
     name = request.form['copyName']
-    setSelect(driveText, path, name)
-    print(selectedDrive, file=sys.stderr)
-    print(copyRawPath, file=sys.stderr)
-    print(copyRawName, file=sys.stderr)
-    sys.stdout.flush()
+    copy = request.form['copy']
+    setSelect(driveText, copy, path, name)
+    # print(selectedDrive, file=sys.stderr)
+    # print(copyRawPath, file=sys.stderr)
+    # print(copyRawName, file=sys.stderr)
+    # print(option, file=sys.stderr)
+    # sys.stdout.flush()
 
     drive = getDrive(fullDriveList, int(selectedDrive))
+    print(drive, file=sys.stderr)
     if not name or not path :
         print('redirect to config', file=sys.stderr)
         return redirect('http://localhost:5000/config')
@@ -76,18 +80,39 @@ def extract():
 
     if scanOption == "1":
         print('[+] Initializing Fast Scan', file=sys.stderr)
+    elif scanOption == "2":
+        print('[+] Initializing Normal Scan', file=sys.stderr)
+    elif scanOption == "3":
+        print('[+] Initializing Deep Scan', file=sys.stderr)
 
-    return render_template('loadExtract.html')
+    rawExtractLocation = extractLocation.replace('\\','\\\\')
+    print(rawExtractLocation, file=sys.stderr)
+    return render_template('loadExtract.html', copy = doCopy, location = rawExtractLocation)
 
+# Extract directly from drive
 @app.route('/scanExtract')
 def scanExtract():
     (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
     if scanOption == '1':
-        print ('PRINTING HEHE', file=sys.stderr)
+        print ('Extracting (Fast-Scan): ', file=sys.stderr)
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(fastReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
 
+# Extract from copied raw Image
+@app.route('/scanExtractCopy')
+def scanCopy():
+    rawPath = copyRawPath + copyRawName + ".dd"
+    print (rawPath, file=sys.stderr)
+    (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
+    if scanOption == '1':
+        print ('Extracting (Fast-Scan): ', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(fastReadImage(rawPath, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
+
+
+# Copy Raw Image
 @app.route("/copyImage")
 def copyImage():
     return Response(toRawImage(copyRawName, copyRawPath, drive), mimetype= 'text/event-stream')
@@ -95,11 +120,13 @@ def copyImage():
 
 
 # Set the drive, rawpath, and rawname global variables.
-def setSelect(drive, rawPath = None, rawName = None):
+def setSelect(drive, copy, rawPath = None, rawName = None):
     global selectedDrive
     global copyRawPath
     global copyRawName
+    global doCopy
     selectedDrive = drive
+    doCopy = copy
     copyRawName = rawName
     copyRawPath = rawPath
 

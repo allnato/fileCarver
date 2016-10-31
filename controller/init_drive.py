@@ -76,7 +76,7 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 		try:
 			os.makedirs(output_path)
 		except OSError:
-			#print("Error: " + output_path + " directory cannot be created\n") ################## DISPLAY ERROR MESSAGE @to_GUI
+			print("Error: " + output_path + " directory cannot be created\n", file=sys.stderr) ################## DISPLAY ERROR MESSAGE @to_GUI
 			exit(-1)
 
 	#print("\n[+] Writing to raw image file. This may take a while...")  # @to_GUI
