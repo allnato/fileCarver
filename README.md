@@ -27,3 +27,6 @@ In the same directory, run the program by issuing "npm start"
 npm start
 ```
 
+## Note
+**Normal and Deep scan option is still in progress.**
+
