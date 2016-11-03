@@ -10,10 +10,16 @@ More information about the program architecture can be found [here](https://www.
 This program requires [nodejs](https://nodejs.org/en/) and [Python](https://www.python.org/) installed in the machine.
 
 ### Prerequisites
+Open the commands prompt as adminstrator to avoid permission denied issue. <br/>
 Install flask to render web pages using Python.
 ```
 pip install Flask
 ```
+Install win32 module in Python to access drives.
+```
+pip install pypiwin32
+```
+
 
 ## Installing
 In the command line, go to the FileRecovery\app directory and install npm dependencies
