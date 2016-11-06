@@ -10,7 +10,7 @@ More information about the program architecture can be found [here](https://www.
 This program requires [nodejs](https://nodejs.org/en/) and [Python](https://www.python.org/) installed in the machine.
 
 ### Prerequisites
-Open the commands prompt as adminstrator to avoid permission denied issue. <br/>
+Open the commands prompt as administrator to avoid permission denied issue. <br/>
 Install flask to render web pages using Python.
 ```
 pip install Flask
@@ -35,4 +35,3 @@ npm start
 
 ## Note
 **Normal and Deep scan option is still in progress.**
-
