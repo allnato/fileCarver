@@ -8,6 +8,7 @@
 
         <link rel="stylesheet" href="static/css/materialize.css">
         <link rel="stylesheet" href="static/css/start.css?version=4">
+        <link rel="stylesheet" href="static/css/font-awesome.min.css">
 
         <title>File Carver</title>
     </head>
@@ -16,18 +17,32 @@
         <div class="wrapper">
             <h1 class="center-align logo ">fileCarver</h1>
             <p class="center-align ">A PNG, JPG, DOC, and XLS file retriever.</p>
-            <div class="center-align">
+            <div class="center-align buttons">
               <form action="/select" method="post">
                 <div class="row">
-                  <button type="submit" class="waves-effect waves-light btn">Select Drive</button>
+                  <button type="submit" class="waves-effect waves-light btn drive-btn col s8 offset-s2">
+                    <i class="fa fa-usb"></i>
+                    Select Drive
+                  </button>
                 </div>
               </form>
-              <form action="">
-                <div class="row">
-                  <button class="waves-effect waves-light btn exit-btn" type="button">Exit</button>
-                </div>
-
-              </form>
+              <div class="row">
+                <button class="waves-effect waves-light btn img-btn col s8 offset-s2" type="button">
+                  <i class="fa fa-floppy-o"></i>
+                  Select Image
+                </button>
+              </div>
+              <div class="row">
+                <button class="waves-effect waves-light btn shred-btn col s8 offset-s2" type="button">
+                  <i class="fa fa-trash"></i>
+                  Shred Drive
+                </button>
+              </div>
+              <div class="row">
+                <button class="waves-effect waves-light btn exit-btn" type="button">
+                  Exit
+                </button>
+              </div>
             </div>
         </div>
     </body>
@@ -39,16 +54,19 @@
     <script src="static/js/materialize.min.js"></script>
     <script src="static/js/particles.js"></script>
     <script src="static/js/app.js?version=3"></script>
+    <script src="static/js/equalize.min.js"></script>
     <!-- Insert this line after script imports -->
     <script>if (window.module) module = window.module;</script>
 
     <script>
+
       var remote = require('electron').remote;
 
       $('.exit-btn').click(function() {
         var window = remote.getCurrentWindow();
         window.close();
       });
+
     </script>
 
 </html>
