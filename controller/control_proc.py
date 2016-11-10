@@ -3,6 +3,8 @@
 from init_drive import *
 from model_app import *
 from head_file import *
+from man_time import *
+from timeit import default_timer as timer
 import os
 
 def initDrive(**item_opt):
@@ -39,6 +41,16 @@ def headFile(**item_opt):
 	else:
 		exit(0)
 
+def manTime(**item_opt):
+	
+	start_time = timer()
+	total_size = 100000
+	
+	for i in range(0, total_size):
+		prog, rem_time = getPercentAndRemainProgress(i, total_size, start_time)
+		print(str(prog) + "%\nTime remaining: " + str(rem_time))
+
 modelApp()
 initDrive()
 headFile()
+manTime()

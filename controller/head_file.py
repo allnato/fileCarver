@@ -8,16 +8,7 @@ import sys, binascii, re, os, math
 import binascii, re, os, math
 from init_drive import getDriveTotal
 from timeit import default_timer as timer
-from man_time import displayTime
-
-def getReadProgress(block_num, block_total, start_time):                    # give value to view
-	cur_block = block_num * 1.0 / block_total * 100
-	
-	elapsed_time = timer() - start_time
-	rem_time = (elapsed_time / block_num) * (block_total - block_num)
-	rem_time = displayTime(rem_time, 3)
-	
-	return("{0:.2f}".format(cur_block), rem_time)
+from man_time import getPercentAndRemainProgress
 
 def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, **item_opt):   # improve this by recovering recently deleted files
 	file_ctr = 0
@@ -47,7 +38,7 @@ def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 	lst_dump = []
 
 	while block_num <= block_total:
-		prog, rem_time = getReadProgress(block_num, block_total, start_time)     # @to_GUI
+		prog, rem_time = getPercentAndRemainProgress(block_num, block_total, start_time)     # @to_GUI
 		yield "data:" + str(prog) + " " + str(file_ctr) + " " + str(rem_time) + "\n\n"
 		for i in range(0, type_ctr):
 			match = lst_srt[i].search(hex_data)

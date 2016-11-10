@@ -1,5 +1,6 @@
 #man_time.py
 
+from timeit import default_timer as timer
 import math
 
 intervals = (
@@ -10,7 +11,7 @@ intervals = (
     ('seconds', 1),
 )
 
-def displayTime(seconds, granularity=2):
+def _displayTime(seconds, granularity=2):
     result = []
     seconds = int(math.ceil(seconds))
 
@@ -22,3 +23,17 @@ def displayTime(seconds, granularity=2):
                 name = name.rstrip('s')
             result.append("{} {}".format(value, name))
     return ', '.join(result[:granularity])
+
+def getPercentAndRemainProgress(written_size, total_size, start_time):
+	if not written_size:
+		written_size = 1
+	if not total_size:
+		total_size = 1
+	
+	cur_size = written_size * 1.0 / total_size * 100
+	
+	elapsed_time = timer() - start_time
+	rem_time = (elapsed_time / written_size) * (total_size - written_size)
+	rem_time = _displayTime(rem_time, 3)
+	
+	return("%.2f" % cur_size, rem_time)

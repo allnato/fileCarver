@@ -4,7 +4,7 @@
 import sys, os, binascii, math, string, subprocess
 from sys import platform
 from timeit import default_timer as timer
-from man_time import displayTime
+from man_time import getPercentAndRemainProgress
 
 def listDrive(**item_opt):
 	lst_fll = []
@@ -58,15 +58,6 @@ def getDrive(lst_drive, selected_num, **item_opt):                       # selec
 		#print("Platform not yet supported")                             ########### DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
 
-def getDrivePercentProgress(written_size, total_size, start_time):                   # give value to view
-	cur_size = written_size * 1.0 / total_size * 100
-	
-	elapsed_time = timer() - start_time
-	rem_time = (elapsed_time / written_size) * (total_size - written_size)
-	rem_time = displayTime(rem_time, 3)
-	
-	return("%.2f" % cur_size, rem_time)
-
 def toRawImage(file_name, output_path, dev_path, **item_opt):            # returns full path to generated image
 	file_name = file_name + ".dd"                                        # assume that the file_name has no file extension
 	written_size = 0
@@ -96,7 +87,7 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 				if img.write(dev.read(bs)) == 0:
 					break
 				written_size = written_size + bs
-				prog, rem_time = getDrivePercentProgress(written_size, total_size, start_time)           # @to_GUI
+				prog, rem_time = getPercentAndRemainProgress(written_size, total_size, start_time)           # @to_GUI
 				yield "data:" + str(prog) + " " + str(rem_time) + "\n\n"
 
 	return file_loc
