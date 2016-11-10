@@ -14,7 +14,7 @@ def getReadProgress(block_num, block_total, start_time):                    # gi
 	cur_block = block_num * 1.0 / block_total * 100
 	
 	elapsed_time = timer() - start_time
-	rem_time = (elapsed_time / written_size) * (total_size - written_size)
+	rem_time = (elapsed_time / block_num) * (block_total - block_num)
 	rem_time = displayTime(rem_time, 3)
 	
 	return("{0:.2f}".format(cur_block), rem_time)
