@@ -33,6 +33,11 @@ def select():
     fullDriveList = listDrive()
     return render_template('select.html', drive_list = fullDriveList)
 
+#  Select a raw image Page
+@app.route("/selectRaw", methods=['GET','POST'])
+def selectRaw():
+    return render_template('selectRaw.html')
+
 # Set the user input in the select page
 @app.route("/setSelect", methods=['GET', 'POST'])
 def setSelectGlobal():
@@ -116,6 +121,7 @@ def scanCopy():
 @app.route("/copyImage")
 def copyImage():
     return Response(toRawImage(copyRawName, copyRawPath, drive), mimetype= 'text/event-stream')
+
 
 
 

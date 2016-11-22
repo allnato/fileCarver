@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Carver</title>
+
+    <link rel="stylesheet" href="static/css/materialize.min.css">
+    <link rel="stylesheet" href="static/css/select.css?version=5">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+    <style media="screen">
+      .selectPanel > h4{
+        font-size: 3.0rem !important;
+        font-family: 'raleway';
+        font-weight: bolder !important;
+        margin-bottom: 25px;
+      }
+      .line{
+        margin-bottom: 3em;
+      }
+    </style>
+  </head>
+
+  <body class="grey lighten-2">
+    <div class="wrapper">
+      <div class="container">
+        <div class="card-panel z-depth-2 selectPanel">
+          <h4><i class="fa fa-floppy-o blue-text"></i> Select a valid raw image.</h4>
+          <hr class="line">
+          <!-- Set Copy Location -->
+          <button class="btn waves-effect grey lighten-2 text-darken-4 grey-text" id="selectRawBtn">
+            Select Raw Image
+          </button>
+          <!-- Displayed Copy Location -->
+          <blockquote>
+            <p class="selectRawText blue-text" id="selectRawText">No raw image selected</p>
+          </blockquote>
+          <!-- Hidden open file directory -->
+          <input type="file" id="selectRaw" style="display:none">
+        </div>
+
+        <!-- To Config -->
+        <div class="toConfig right-align">
+          <button class="btn waves-light waves-effect" id="toConfig">To Config</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Forms -->
+    <form action="/setSelect" method="post" id="doCopyForm" style="display: none">
+      <input type="text" name="copyPath" id="selectRawForm" required>
+    </form>
+  </body>
+
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!-- normal script imports etc  -->
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/materialize.min.js"></script>
+  <script src="static/js/jquery.matchHeight-min.js"></script>
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+  <script type="text/javascript">
+  //Set copy Location
+  $('#selectRawBtn').click(function(event) {
+    $('#selectRaw').click();
+  });
+
+  // Change the location display and copy the data into the form
+  $('#selectRaw').change(function(event) {
+      var folderLocation = document.getElementById('selectRaw').files[0].path + "\\"
+      console.log(folderLocation);
+      $('#selectRawText').text(folderLocation);
+      $('#selectRawForm').val(folderLocation);
+  });
+  </script>
+</html>
