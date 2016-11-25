@@ -15,7 +15,9 @@
     <div class="loading center-align">
       <img src="static/svg/gears.svg" alt="">
       <h2 class="center-align raleway">
-        Copying: <span class="percent">0</span>%
+        <p>Copying: <span class="percent">0</span>%</p>
+        <p>Time Remaining: <span class="timeRemain">0</span></p>
+
       </h2>
     </div>
 
@@ -38,7 +40,17 @@
 
   var progress = new EventSource("/copyImage");
   progress.onmessage = function(event){
-    changePercent(event.data);
+    var res = (event.data).split(" ")
+    changePercent(res[0]);
+
+    if(res.length == 4){
+      changeTimeRemain(res[1] + " " + res[2]);
+    } else if (res.length == 6) {
+      changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4]);
+    } else if (res.length == 8) {
+      changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4] + " " + res[5] + " " + res[6]);
+    }
+    
     if(event.data == '100.00'){
       progress.close()
       $('.toConfig').submit();
@@ -55,22 +67,10 @@
       $('.percent').text(i);
     }
 
-    // $('#jButton').click(function(event) {
-    //   $.ajax({
-    //     url: '/jURL',
-    //     type: 'GET',
-    //     dataType: 'json'
-    //   })
-    //   .done(function(data) {
-    //     console.log("success");
-    //     text = $('.jText').text()
-    //     $('.jText').text(text + " " + data)
-    //   })
-    //   .fail(function() {
-    //     console.log("error");
-    //   })
-    //
-    // });
+    function changeTimeRemain(i){
+      $('.timeRemain').text(i);
+    }
+
   </script>
 
 </html>
