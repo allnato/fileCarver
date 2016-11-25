@@ -8,18 +8,18 @@
 
     <link rel="stylesheet" href="static/css/materialize.min.css">
 
-    <link rel="stylesheet" href="static/css/load.css?ver=2">
+    <link rel="stylesheet" href="static/css/load.css?ver=3">
   </head>
 
   <body class="grey lighten-3">
     <div class="loading center-align">
       <img src="static/svg/gears.svg" alt="">
+      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
     </div>
-    <div class="loadbar" style="width: 25%">
+    <div class="loadbar center-align" style="width: 25%">
       <div class="progress">
         <div class="determinate" style="width: 0"></div>
       </div>
-      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
     </div>
     <div class="center-align">
       <div class="extracting raleway center-align">
@@ -58,17 +58,11 @@
       changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4] + " " + res[5] + " " + res[6]);
     }
 
-    if(event.data == '100.00'){
+    if(res[0] == '100.00'){
       progress.close()
       $('.toConfig').submit();
     }
   }
-
-
-    $(document).ready(function() {
-
-
-    });
 
     function changePercent(i){
       $('.percent').text(i);
