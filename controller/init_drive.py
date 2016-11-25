@@ -1,9 +1,10 @@
 # init_drive.py
 # attempt to do os.open() and pip install here
 
-import sys, os, binascii, math, string
+import sys, os, binascii, math, string, subprocess
 from sys import platform
-import subprocess
+from timeit import default_timer as timer
+from man_time import getPercentAndRemainProgress
 
 def listDrive(**item_opt):
 	lst_fll = []
@@ -57,15 +58,12 @@ def getDrive(lst_drive, selected_num, **item_opt):                       # selec
 		#print("Platform not yet supported")                             ########### DISPLAY ERROR MESSAGE @to_GUI
 		exit(-1)
 
-def getDrivePercentProgress(written_size, total_size):                   # give value to view
-	cur_size = written_size*1.0 / total_size * 100
-	return("%.2f" % cur_size)
-
 def toRawImage(file_name, output_path, dev_path, **item_opt):            # returns full path to generated image
 	file_name = file_name + ".dd"                                        # assume that the file_name has no file extension
 	written_size = 0
 	total_size = getDriveTotal(dev_path)
 	output_path = os.path.normcase(output_path)
+	start_time = timer()
 
 	if "bs" in item_opt:
 		bs = item_opt["bs"]
@@ -89,8 +87,8 @@ def toRawImage(file_name, output_path, dev_path, **item_opt):            # retur
 				if img.write(dev.read(bs)) == 0:
 					break
 				written_size = written_size + bs
-				prog = getDrivePercentProgress(written_size, total_size)           # @to_GUI
-				yield "data:" + str(prog) + "\n\n"
+				prog, rem_time = getPercentAndRemainProgress(written_size, total_size, start_time)           # @to_GUI
+				yield "data:" + str(prog) + " " + str(rem_time) + "\n\n"
 
 	return file_loc
 

@@ -3,6 +3,8 @@
 from init_drive import *
 from model_app import *
 from head_file import *
+from man_time import *
+from timeit import default_timer as timer
 import os
 
 def initDrive(**item_opt):
@@ -11,9 +13,6 @@ def initDrive(**item_opt):
 
 	selected_drive = getDrive(drives, 4)
 	print(selected_drive)
-
-	prog = getDrivePercentProgress(33, 1000)
-	print(str(prog) + "%")
 
 	#toRawImage("transcend1", "../generated-images/", selected_drive)        # Image file detected! Do you want to use or overwrite the image file?
 
@@ -30,9 +29,6 @@ def modelApp(**item_opt):
 	print(full_prefix)
 
 def headFile(**item_opt):
-	prog, file_ctr = getReadProgress(333, 10000, 56)
-	print(prog)
-	print(file_ctr)
 
 	(lst_srt, lst_end, lst_buf) = compileRegs(["doc", "jpg", "pdf", "png", "xls"])
 	print(lst_srt)
@@ -45,6 +41,16 @@ def headFile(**item_opt):
 	else:
 		exit(0)
 
+def manTime(**item_opt):
+	
+	start_time = timer()
+	total_size = 100000
+	
+	for i in range(0, total_size):
+		prog, rem_time = getPercentAndRemainProgress(i, total_size, start_time)
+		print(str(prog) + "%\nTime remaining: " + str(rem_time))
+
 modelApp()
 initDrive()
 headFile()
+manTime()

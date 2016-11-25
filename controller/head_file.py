@@ -7,18 +7,15 @@ import sys, binascii, re, os, math
 
 import binascii, re, os, math
 from init_drive import getDriveTotal
-
-def getReadProgress(block_num, block_total, file_ctr):                    # give value to view
-	#print("Examining Block: ", block_num, " out of ", block_total)       # @to_GUI
-	#print("[+] Recovered ", file_ctr, " files.")                         # @to_GUI
-	cur_block = block_num*1.0 / block_total * 100
-	return("{0:.2f}".format(cur_block), file_ctr)
+from timeit import default_timer as timer
+from man_time import getPercentAndRemainProgress
 
 def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, **item_opt):   # improve this by recovering recently deleted files
 	file_ctr = 0
 	block_size = 131072
 	block_num = 0
 	output_path = os.path.normcase(output_path)
+	start_time = timer()
 
 	try:
 		file_hndle = open(file_name, 'rb')
@@ -41,8 +38,8 @@ def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 	lst_dump = []
 
 	while block_num <= block_total:
-		prog, file_ctr = getReadProgress(block_num, block_total, file_ctr)     # @to_GUI
-		yield "data:" + str(prog) + " " + str(file_ctr) +"\n\n"
+		prog, rem_time = getPercentAndRemainProgress(block_num, block_total, start_time)     # @to_GUI
+		yield "data:" + str(prog) + " " + str(file_ctr) + " " + str(rem_time) + "\n\n"
 		for i in range(0, type_ctr):
 			match = lst_srt[i].search(hex_data)
 			if match:
