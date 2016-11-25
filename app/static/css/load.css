@@ -14,9 +14,14 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .raleway{
   font-family: 'raleway';
   font-weight: bold;
+}
+
+.progress{
+  height: 10px !important;
 }

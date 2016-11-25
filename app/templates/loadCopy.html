@@ -8,17 +8,24 @@
 
     <link rel="stylesheet" href="static/css/materialize.min.css">
 
-    <link rel="stylesheet" href="static/css/load.css">
+    <link rel="stylesheet" href="static/css/load.css?ver=2">
   </head>
 
   <body class="grey lighten-3">
     <div class="loading center-align">
       <img src="static/svg/gears.svg" alt="">
-      <h2 class="center-align raleway">
-        <p>Copying: <span class="percent">0</span>%</p>
+    </div>
+    <div class="loadbar" style="width: 25%">
+      <div class="progress">
+        <div class="determinate" style="width: 0"></div>
+      </div>
+      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
+    </div>
+    <div class="center-align">
+      <div class="extracting raleway center-align">
+        <h4>Copying:</h4>
         <p>Time Remaining: <span class="timeRemain">0</span></p>
-
-      </h2>
+      </div>
     </div>
 
     <form action="/config" class="toConfig" style="display:hidden">
@@ -42,15 +49,15 @@
   progress.onmessage = function(event){
     var res = (event.data).split(" ")
     changePercent(res[0]);
-
-    if(res.length == 4){
+    $('.determinate').css('width', parseInt(res[0]) + "%");
+    if(res.length == 3){
       changeTimeRemain(res[1] + " " + res[2]);
-    } else if (res.length == 6) {
+    } else if (res.length == 5) {
       changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4]);
-    } else if (res.length == 8) {
+    } else if (res.length == 7) {
       changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4] + " " + res[5] + " " + res[6]);
     }
-    
+
     if(event.data == '100.00'){
       progress.close()
       $('.toConfig').submit();

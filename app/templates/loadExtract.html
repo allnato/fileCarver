@@ -8,17 +8,27 @@
 
     <link rel="stylesheet" href="static/css/materialize.min.css">
 
-    <link rel="stylesheet" href="static/css/load.css">
+    <link rel="stylesheet" href="static/css/load.css?ver=3">
   </head>
 
   <body class="grey lighten-3">
     <div class="loading center-align">
       <img src="static/svg/magnify.svg" alt="">
-      <h2 class="center-align raleway extracting">
-        Extracting: <span class="percent">0</span>%
-      </h2>
-      <p>File(s) Recovered: <span class="recovered">0</span></p>
-      <p>Time Remaining: <span class="timeRemain">0</span></p>
+    </div>
+    <div class="loadbar" style="width: 25%">
+      <div class="progress">
+        <div class="determinate" style="width: 0"></div>
+      </div>
+      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
+    </div>
+    <div class="center-align">
+      <div class="extracting raleway center-align">
+        <h4>Extracting:</h4>
+        <p>Time Remaining: <span class="timeRemain">0</span></p>
+      </div>
+    </div>
+    <div class="center-align">
+      <p style="font-weight: bold">File(s) Recovered: <span class="recovered">0</span></p>
     </div>
 
   </body>
@@ -51,6 +61,7 @@
       progress.onmessage = function(event){
         var res = (event.data).split(" ")
         changePercent(res[0]);
+        $('.determinate').css('width', parseInt(res[0]) + "%");
         $('.recovered').text(res[1])
 
         if(res.length == 4){
@@ -65,7 +76,7 @@
           console.log("Finished Extracting");
           shell.showItemInFolder(location)
           $('.extracting').text('Done')
-          $('percent').text('')
+          $('.percent').text('')
           $('.extracting').addClass('green-text')
           progress.close()
         }
