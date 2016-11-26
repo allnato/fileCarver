@@ -7,8 +7,9 @@ from flask import Flask, render_template, request, redirect, jsonify, Response
 app = Flask(__name__)
 
 # Global Variables
-doCopy = None
+doCopy = -1
 selectedDrive = None
+selectRawPath = None
 copyRawPath = None
 copyRawName = None
 
@@ -62,6 +63,12 @@ def setSelectGlobal():
         print('redirect to copy', file=sys.stderr)
         return redirect('http://localhost:5000/copy')
 
+@app.route("/setSelectRaw", methods=['GET', 'POST'])
+def setRaw():
+    global drive
+    drive = request.form['rawPath']
+    return redirect('http://localhost:5000/config')
+
 # Configure extraction page.
 @app.route("/config", methods=['GET','POST'])
 def config():
@@ -97,6 +104,7 @@ def extract():
 # Extract directly from drive
 @app.route('/scanExtract')
 def scanExtract():
+    print (drive, file=sys.stderr)
     (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
     if scanOption == '1':
         print ('Extracting (Fast-Scan): ', file=sys.stderr)
@@ -114,6 +122,17 @@ def scanCopy():
         print ('Extracting (Fast-Scan): ', file=sys.stderr)
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(fastReadImage(rawPath, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
+
+@app.route('/scanExtractRaw')
+def scanExtractRaw():
+    print ('ScanExtractRaw', file=sys.stderr)
+    print (drive, file=sys.stderr)
+    (lst_srt, lst_end, lst_buf) = compileRegs(fileList)
+    if scanOption == '1':
+        print ('Extracting (Fast-Scan): ', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(fastReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
 
 

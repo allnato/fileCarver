@@ -50,8 +50,8 @@
     </div>
 
     <!-- Hidden Forms -->
-    <form action="/setSelect" method="post" id="doCopyForm" style="display: none">
-      <input type="text" name="copyPath" id="selectRawForm" required>
+    <form action="/setSelectRaw" method="post" id="selectCopyForm" style="display: none">
+      <input type="text" name="rawPath" id="selectRawForm" required>
     </form>
   </body>
 
@@ -75,6 +75,21 @@
       console.log(folderLocation);
       $('#selectRawText').text(folderLocation);
       $('#selectRawForm').val(folderLocation);
+  });
+
+  $('#toConfig').click(function(event) {
+    if($('#selectCopyForm')[0].checkValidity()){
+      var filename = $('#selectRawForm').val();
+      if((/\.(dd|raw)$/i).test(filename.replace(/\\/g, ""))){
+        filename = filename.replace(/\\$/g, "");
+        $('#selectRawForm').val(filename);
+        $('#selectCopyForm').submit();
+      }else {
+        Materialize.toast('Please select a valid raw image :-(', 4000)
+      }
+    } else {
+      Materialize.toast('Please select a raw image :-(', 4000)
+    }
   });
   </script>
 </html>

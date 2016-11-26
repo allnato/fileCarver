@@ -15,7 +15,7 @@
     <div class="loading center-align">
       <img src="static/svg/magnify.svg" alt="">
     </div>
-    <div class="loadbar" style="width: 25%">
+    <div class="loadbar center-align" style="width: 25%">
       <div class="progress">
         <div class="determinate" style="width: 0"></div>
       </div>
@@ -54,8 +54,10 @@
       console.log(location);
       if(mode == '1'){
         progress = new EventSource("/scanExtractCopy")
-      }else{
+      }else if(mode == '0'){
         progress = new EventSource("/scanExtract");
+      }else if (mode == '-1') {
+        progress = new EventSource("/scanExtractRaw");
       }
 
       progress.onmessage = function(event){
