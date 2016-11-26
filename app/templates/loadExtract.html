@@ -14,12 +14,12 @@
   <body class="grey lighten-3">
     <div class="loading center-align">
       <img src="static/svg/magnify.svg" alt="">
+      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
     </div>
     <div class="loadbar center-align" style="width: 25%">
       <div class="progress">
         <div class="determinate" style="width: 0"></div>
       </div>
-      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
     </div>
     <div class="center-align">
       <div class="extracting raleway center-align">
@@ -78,7 +78,7 @@
           console.log("Finished Extracting");
           shell.showItemInFolder(location)
           $('.extracting').text('Done')
-          $('.percent').text('')
+          $('.percent').text('100.00')
           $('.extracting').addClass('green-text')
           progress.close()
         }
