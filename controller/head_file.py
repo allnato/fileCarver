@@ -10,8 +10,6 @@ from init_drive import getDriveTotal
 from timeit import default_timer as timer
 from man_time import getPercentAndRemainProgress
 
-test_met = False ###DEBUG ONLY
-
 def fastReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, **item_opt):   # improve this by recovering recently deleted files
 	file_ctr = 0
 	block_size = 131072
