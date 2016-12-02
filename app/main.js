@@ -21,6 +21,7 @@ app.on('ready', function(){
 
     // Loads localhost:5000 (Flask)
     mainWindow.loadURL('http://localhost:5000');
+    
     // Only show native window if elements are ready.
     mainWindow.on('ready-to-show', function(){
       mainWindow.show();
