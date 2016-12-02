@@ -116,6 +116,11 @@ def scanExtract():
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(standardReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
+    elif scanOption == '3':
+        print ('Extracting (Standard-Scan): ', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(deepReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
 
 # Extract from copied raw Image
 @app.route('/scanExtractCopy')
@@ -133,6 +138,11 @@ def scanCopy():
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(standardReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
+    elif scanOption == '3':
+        print ('Extracting (Standard-Scan): ', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(deepReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
 
 @app.route('/scanExtractRaw')
 def scanExtractRaw():
@@ -148,6 +158,11 @@ def scanExtractRaw():
         print ('Extracting (Standard-Scan): ', file=sys.stderr)
         fullPrefix = namingFile(extractLocation, filePrefix)
         return Response(standardReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
+        mimetype= 'text/event-stream')
+    elif scanOption == '3':
+        print ('Extracting (Standard-Scan): ', file=sys.stderr)
+        fullPrefix = namingFile(extractLocation, filePrefix)
+        return Response(deepReadImage(drive, fullPrefix, lst_srt, lst_end, fileList, lst_buf),
         mimetype= 'text/event-stream')
 
 
