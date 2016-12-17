@@ -3,6 +3,7 @@ sys.path.append('../controller')
 from head_file import *
 from init_drive import *
 from model_app import *
+from burn_drive import *
 from flask import Flask, render_template, request, redirect, jsonify, Response
 app = Flask(__name__)
 
@@ -19,6 +20,8 @@ scanOption = None
 extractLocation = None
 
 fullDriveList = None
+
+selectedShredOption = None
 
 drive = None
 
@@ -38,6 +41,34 @@ def select():
 @app.route("/selectRaw", methods=['GET','POST'])
 def selectRaw():
     return render_template('selectRaw.html')
+
+@app.route("/selectShred", methods=['GET', 'POST'])
+def selectShred():
+    global fullDriveList
+    fullDriveList = listDrive()
+    return render_template('selectShred.html', drive_list = fullDriveList)
+
+@app.route("/burnDrive", methods=['GET', 'POST'])
+def burnDrive():
+    global selectedDrive
+    global selectedShredOption
+    global drive
+    selectedDrive = request.form['drive'];
+    selectedShredOption = request.form['option'];
+    drive = getDrive(fullDriveList, int(selectedDrive));
+
+    return render_template('loadShred.html');
+
+@app.route("/startBurn", methods=['GET', 'POST'])
+def startBurn():
+    print("=-=-=-=-=--=-=-=-= START BURN -=-=-=-=-=--==-=-", file=sys.stderr)
+    rawTotal = getDriveTotal(drive);
+    print(drive, file=sys.stderr)
+    print(rawTotal, file=sys.stderr)
+    print(selectedShredOption, file=sys.stderr)
+    block_total = int(math.ceil(rawTotal / 8192))
+    return Response(cleanDrive(drive, block_total, 8192, "0") ,mimetype= 'text/event-stream')
+
 
 # Set the user input in the select page
 @app.route("/setSelect", methods=['GET', 'POST'])

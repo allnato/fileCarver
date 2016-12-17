@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Carver</title>
+
+    <link rel="stylesheet" href="static/css/materialize.min.css">
+    <link rel="stylesheet" href="static/css/select.css?version=5">
+    <style media="screen">
+      .collection-item{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body class="grey lighten-2">
+    <div class="wrapper">
+      <div class="container">
+        <!-- Select Drive -->
+        <ul class="collection with-header card-panel z-depth-2" id="selectDrive">
+            <li class="collection-header">
+                <h4>Select a Drive:</h4>
+            </li>
+            {% set i = 0 %}
+            {% for drives in drive_list %}
+            <a class="collection-item" id="{{i}}">{{drives}}</a>
+            {% set i = i + 1 %}
+            {% endfor %}
+        </ul>
+
+        <!-- Selected Drive -->
+        <blockquote class="displayDrive">
+            <p>Selected Drive: <span class="selectedDrive"></span></p>
+        </blockquote>
+
+        <!-- Scan Options -->
+        <div class="card-panel z-depth-1 file-scan">
+          <h5 class="raleway">Shred Option:</h5>
+          <hr>
+          <p>
+            <input name="scanOption" type="radio" id="zero-flash" class="scanOption" checked required value="0"/>
+            <label for="zero-flash">Zero Flash</label>
+          </p>
+
+          <p>
+            <input name="scanOption" type="radio" id="pseudo-flash" class="scanOption" value="1"/>
+            <label for="pseudo-flash">PseudoRandom Flash</label>
+          </p>
+        </div>
+
+        <!-- To Config -->
+        <div class="toConfig right-align">
+          <button class="btn waves-light waves-effect" id="toShred">Shred Drive</button>
+        </div>
+      </div>
+    </div>
+
+    <form action="/burnDrive" method="post" id="shredForm" style="display: none">
+      <input type="text" name="drive" class="driveForm" required value="">
+      <input type="number" value="0" id="option" name="option" required>
+    </form>
+  </body>
+
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!-- normal script imports etc  -->
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/materialize.min.js"></script>
+  <script src="static/js/jquery.matchHeight-min.js"></script>
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Select Drive
+      $('.collection-item').click(function(event) {
+        $('.collection-item').removeClass('active');
+        $(this).addClass('active');
+        $('.selectedDrive').text($(this).text());
+        // Copy the the data into the form
+        $('.driveForm').val($(this).attr('id'));
+        console.log($('.driveForm').val());
+      });
+
+      $('#toShred').click(function(event) {
+        if($('#shredForm')[0].checkValidity()){
+          $('#shredForm').submit();
+        }else {
+          Materialize.toast('Fill up the required fields.', 4000)
+        }
+      });
+
+      $('.scanOption').click(function(event) {
+        $('#option').val($(this).val());
+        console.log($('#option').val());
+      });
+
+    });
+  </script>
+
+</html>
