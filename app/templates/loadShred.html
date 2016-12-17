@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Carver</title>
+
+    <link rel="stylesheet" href="static/css/materialize.min.css">
+
+    <link rel="stylesheet" href="static/css/load.css?ver=3">
+  </head>
+
+  <body class="grey lighten-3">
+    <div class="loading center-align">
+      <img src="static/svg/gears.svg" alt="">
+      <h3 style="font-weight: bold"><span class="percent">0</span>%</h3>
+    </div>
+    <div class="loadbar center-align" style="width: 25%">
+      <div class="progress">
+        <div class="determinate" style="width: 0"></div>
+      </div>
+    </div>
+    <div class="center-align">
+      <div class="extracting raleway center-align">
+        <h4>Shredding:</h4>
+        <p>Time Remaining: <span class="timeRemain">0</span></p>
+      </div>
+    </div>
+    <div class="center-align">
+      <p style="font-weight: bold">
+        <span class="currPass">0</span> out of <span class="totalPass">0</span> passes
+      </p>
+    </div>
+
+  </body>
+
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!-- normal script imports etc  -->
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/materialize.min.js"></script>
+  <script src="static/js/jquery.matchHeight-min.js"></script>
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+
+  <script type="text/javascript">
+
+  var progress = new EventSource("/startBurn");
+  progress.onmessage = function(event){
+    var res = (event.data).split(" ")
+    changePercent(res[0]);
+    $('.currPass').text(res[1]);
+    $('.totalPass').text(res[2]);
+    $('.determinate').css('width', parseInt(res[0]) + "%");
+    if(res.length == 5){
+      changeTimeRemain(res[3] + " " + res[4]);
+    } else if (res.length == 7) {
+      changeTimeRemain(res[3] + " " + res[4] + " " + res[5] + " " + res[6]);
+    } else if (res.length == 8) {
+      changeTimeRemain(res[3] + " " + res[4] + " " + res[5] + " " + res[6] + " " + res[7] + " " + res[8]);
+    }
+
+  if(res[2] > 1){
+    if(res[0] == '100.00' && res[1] == res[2]){
+      $('.extracting').text('Done');
+      $('.percent').text('100.00');
+      $('.extracting').addClass('green-text');
+      progress.close();
+    }
+  } else {
+    if(res[0] == '100.00'){
+      $('.extracting').text('Done');
+      $('.percent').text('100.00');
+      $('.extracting').addClass('green-text');
+      progress.close();
+    }
+  }
+  }
+
+    function changePercent(i){
+      $('.percent').text(i);
+    }
+
+    function changeTimeRemain(i){
+      $('.timeRemain').text(i);
+    }
+
+  </script>
+
+</html>
