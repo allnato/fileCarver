@@ -61,12 +61,21 @@
       changeTimeRemain(res[3] + " " + res[4] + " " + res[5] + " " + res[6] + " " + res[7] + " " + res[8]);
     }
 
+  if(res[2] > 1){
+    if(res[0] == '100.00' && res[1] == res[2]){
+      $('.extracting').text('Done');
+      $('.percent').text('100.00');
+      $('.extracting').addClass('green-text');
+      progress.close();
+    }
+  } else {
     if(res[0] == '100.00'){
       $('.extracting').text('Done');
       $('.percent').text('100.00');
       $('.extracting').addClass('green-text');
       progress.close();
     }
+  }
   }
 
     function changePercent(i){

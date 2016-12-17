@@ -66,9 +66,16 @@ def startBurn():
     print(drive, file=sys.stderr)
     print(rawTotal, file=sys.stderr)
     print(selectedShredOption, file=sys.stderr)
-    block_total = int(math.ceil(rawTotal / 8192))
-    return Response(cleanDrive(drive, block_total, 8192, "0") ,mimetype= 'text/event-stream')
 
+    rand_data = "0123456789ABCDEF"
+    rand_char = "ABCDEF"
+    rand_numb = "1234567890"
+    
+    block_total = int(math.ceil(rawTotal / 8192))
+    if selectedShredOption == "0":
+        return Response(cleanDrive(drive, block_total, 8192, "0") ,mimetype= 'text/event-stream')
+    if selectedShredOption == "1":
+        return Response(cleanDrive(drive, block_total, 8192, rand_data) ,mimetype= 'text/event-stream')
 
 # Set the user input in the select page
 @app.route("/setSelect", methods=['GET', 'POST'])

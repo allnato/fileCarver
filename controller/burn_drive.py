@@ -28,58 +28,25 @@ def setContents(block_size, val_pool, **item_opt):
 
 def cleanDrive(dev_path, block_total, block_size, chr_item): # should only be called by passDrive
 	global cur_pass
-	print("=-=-=-=-=-=-=-=-== CLEAN DRIVE =-=--=--==-=-=-==-==-=-==")
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE =-=--=--==-=-=-==-==-=-==")
 	block_num = 0
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE 1 =-=--=--==-=-=-==-==-=-==")
 	block_mark = 0
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE 2=-=--=--==-=-=-==-==-=-==")
 
 	dev = open(dev_path, 'r+b')
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE 3=-=--=--==-=-=-==-==-=-==")
 	dev.close()
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE 4=-=--=--==-=-=-==-==-=-==")
 
-	rand_cont = ""
+	item = setContents(block_size, chr_item)
 
-	if len("0") > 1:
-		print("this should not be executed")
-		for i in range(0, block_size):
-			encrypt_val = random.choice("0")
-			rand_cont = rand_cont + encrypt_val
-	else:
-		print("MALAKING PEPS 4.1")
-		for i in range(0, block_size):
-			print("MALAKING PEPS" + " " + str(i))
-			rand_cont = rand_cont + "0"
-
-	rand_cont = rand_cont.encode('utf-8')
-	item = binascii.unhexlify(rand_cont)
-
-	print("=-=-=-=-=-=-=-=-== MALAKING PEPE 5=-=--=--==-=-=-==-==-=-==")
 	init_total = int(block_total / 10)
-	print("=-=-=-=-=-=-=-=-=-=-= OUTSIDE TRY =-=-==-=-=-=-=-=-=-=-=")
+
 	try:
 		with open(dev_path, 'r+b') as dev:
 			for i in range(0, init_total):
 				try:
-					print("=-=-=-=-=-=-=-=-=-=-= INSIDE TRY =-=-==-=-=-=-=-=-=-=-=")
 					dev.seek(block_size * block_num)
 					block_num = block_num + 1
 					block_mark = block_mark + 1
 
-					rand_cont = ""
-
-					if len("0") > 1:
-						for i in range(0, block_size):
-							encrypt_val = random.choice("0")
-							rand_cont = rand_cont + encrypt_val
-					else:
-						for i in range(0, block_size):
-							rand_cont = rand_cont + "0"
-
-					rand_cont = rand_cont.encode('utf-8')
-					item = binascii.unhexlify(rand_cont)
+					item = setContents(block_size, chr_item)
 					dev.write(item)
 				except:
 					block_num = block_num + 1
@@ -100,18 +67,7 @@ def cleanDrive(dev_path, block_total, block_size, chr_item): # should only be ca
 					dev.seek(block_size * block_num)
 					block_num = block_num + 1
 
-					rand_cont = ""
-
-					if len("0") > 1:
-						for i in range(0, block_size):
-							encrypt_val = random.choice("0")
-							rand_cont = rand_cont + encrypt_val
-					else:
-						for i in range(0, block_size):
-							rand_cont = rand_cont + "0"
-
-					rand_cont = rand_cont.encode('utf-8')
-					item = binascii.unhexlify(rand_cont)
+					item = setContents(block_size, chr_item)
 					dev.write(item)
 				except:
 					block_num = block_num + 1
