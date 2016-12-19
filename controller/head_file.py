@@ -137,7 +137,7 @@ def standardReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_b
 		for i in range(0, type_ctr):
 			prog, rem_time = getPercentAndRemainProgress(block_num, block_total, start_time)     # @to_GUI
 			yield "data:" + str(prog) + " " + str(file_ctr) + " " + str(rem_time) + "\n\n"
-			
+
 			match = lst_srt[i].search(hex_data)
 			if match:
 				srt_pos = match.start()
@@ -169,7 +169,7 @@ def standardReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_b
 							hex_head = str(lst_end[i]).replace("re.compile('", "").replace("')", "")
 							end_pos = srt_pos + len(hex_head)
 							match = True
-		
+
 							file_data = file_data + hex_data + hex_head     # add replacing regex chars here soon
 							if file_data:
 								lst_dump.append(file_data)
@@ -181,11 +181,11 @@ def standardReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_b
 					file_hndle.seek((block_size) * block_num)
 					unparsed = file_hndle.read(block_size)
 					hex_data = binascii.hexlify(unparsed).decode('utf-8')
-					
+
 				end_pos = end_pos - (end_pos % 2)
 				print(end_pos)
 				hex_data = hex_data[end_pos:]
-				
+
 				for item in lst_dump:
 					if len(item.encode('utf-8')) % 2 != 0:
 						item = item + '0'
@@ -193,7 +193,7 @@ def standardReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_b
 					writeImage(item, output_path, lst_types[i], file_ctr)
 
 				lst_dump = []
-				
+
 				if not hex_data:
 					break
 
@@ -240,7 +240,7 @@ def deepReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 			while True:
 				prog, rem_time = getPercentAndRemainProgress(block_num, block_total, start_time)     # @to_GUI
 				yield "data:" + str(prog) + " " + str(file_ctr) + " " + str(rem_time) + "\n\n"
-				
+
 				match = lst_srt[i].search(hex_data)
 				if match:
 					srt_pos = match.start()
@@ -286,10 +286,10 @@ def deepReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 						file_hndle.seek((block_size) * block_num)
 						unparsed = file_hndle.read(block_size)
 						hex_data = binascii.hexlify(unparsed).decode('utf-8')
-						
+
 					end_pos = end_pos - (end_pos % 2)
 					hex_data = hex_data[end_pos:]
-					
+
 					for item in lst_dump:
 						if len(item.encode('utf-8')) % 2 != 0:
 							item = item + '0'
@@ -297,7 +297,7 @@ def deepReadImage(file_name, output_path, lst_srt, lst_end, lst_types, lst_buf, 
 						writeImage(item, output_path, lst_types[i], file_ctr)
 
 					lst_dump = []
-					
+
 					if not hex_data or limit_reached:
 						break
 				else:

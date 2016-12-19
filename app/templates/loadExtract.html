@@ -46,7 +46,8 @@
 
     var remote = require('electron').remote;
     var shell = remote.shell;
-
+    var maxRet = -1;
+    var currRet = -1;
     $(document).ready(function() {
       var progress = null;
       var mode = {{ copy }};
@@ -62,6 +63,10 @@
 
       progress.onmessage = function(event){
         var res = (event.data).split(" ")
+        currRet = parseInt(res[1]);
+        if(maxRet < currRet){
+          maxRet = currRet;
+        }
         changePercent(res[0]);
         $('.determinate').css('width', parseInt(res[0]) + "%");
         $('.recovered').text(res[1])
@@ -73,8 +78,8 @@
         } else if (res.length == 8) {
           changeTimeRemain(res[2] + " " + res[3] + " " + res[4] + " " + res[5] + " " + res[6] + " " + res[7]);
         }
-
-        if(res[0] == '100.00'){
+        if(res[0] >= 100.00 || maxRet > currRet){
+          console.log("Max Ret:" + maxRet + "-" + res[1] + ":CurrRet");
           console.log("Finished Extracting");
           shell.showItemInFolder(location)
           $('.extracting').text('Done')

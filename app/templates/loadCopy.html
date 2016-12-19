@@ -58,7 +58,7 @@
       changeTimeRemain(res[1] + " " + res[2] + " " + res[3] + " " + res[4] + " " + res[5] + " " + res[6]);
     }
 
-    if(res[0] == '100.00'){
+    if(res[0] >= 100.00){
       progress.close()
       $('.toConfig').submit();
     }
