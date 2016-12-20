@@ -32,6 +32,7 @@
   "homepage": "https://github.com/Ollen/FileRecovery#readme",
   "dependencies": {
     "electron-prebuilt": "^1.3.8",
+    "fibonacci": "^1.6.1",
     "request": "^2.76.0",
     "request-promise": "^4.1.1"
   },
